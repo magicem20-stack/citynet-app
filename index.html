@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Kompost City · Fiera</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #1e5c2e;
+  --green2: #2d7a40;
+  --green3: #3d9954;
+  --green-pale: #edf5ef;
+  --green-mid: #c8e6cc;
+  --earth: #5a3e28;
+  --earth2: #7a5535;
+  --amber: #d97706;
+  --amber-pale: #fef3c7;
+  --bg: #f7f6f3;
+  --card: #ffffff;
+  --border: #e2ddd6;
+  --border2: #ccc7be;
+  --text: #1a1a18;
+  --text2: #4a4a46;
+  --text3: #8a8a84;
+  --danger: #b91c1c;
+  --danger-pale: #fef2f2;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow: 0 4px 16px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.05);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+  --r: 12px;
+  --r-sm: 8px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.screen { display: none; min-height: 100vh; }
+.screen.active { display: flex; flex-direction: column; }
+
+/* ── LOCK ── */
+#screen-lock {
+  background: var(--green);
+  align-items: center; justify-content: center; padding: 40px 24px;
+}
+.lock-logo { text-align: center; margin-bottom: 48px; }
+.lock-logo .leaf { font-size: 52px; margin-bottom: 12px; }
+.lock-logo h1 { font-size: 28px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+.lock-logo p { font-size: 13px; color: rgba(255,255,255,0.6); letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+.lock-card {
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px; padding: 32px 24px; width: 100%; max-width: 340px;
+  backdrop-filter: blur(10px);
+}
+.lock-label { font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 14px; text-align: center; }
+.pin-dots { display: flex; justify-content: center; gap: 14px; margin-bottom: 28px; }
+.pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.4); transition: all .2s; }
+.pin-dot.filled { background: #fff; border-color: #fff; transform: scale(1.1); }
+.pin-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.pin-key {
+  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 12px; color: #fff; font-family: 'Outfit', sans-serif;
+  font-size: 22px; font-weight: 600; padding: 16px; cursor: pointer;
+  transition: all .15s; text-align: center;
+}
+.pin-key:active { background: rgba(255,255,255,0.28); transform: scale(0.95); }
+.pin-key.del { font-size: 16px; color: rgba(255,255,255,0.7); }
+.pin-key.empty { background: transparent; border-color: transparent; cursor: default; }
+.lock-error { color: #fca5a5; font-size: 13px; text-align: center; margin-top: 14px; min-height: 20px; font-weight: 500; }
+.lock-setup-link { text-align: center; margin-top: 24px; }
+.lock-setup-link button { background: transparent; border: none; color: rgba(255,255,255,0.45); font-size: 12px; cursor: pointer; font-family: 'Outfit', sans-serif; text-decoration: underline; }
+
+/* ── SETUP ── */
+#screen-setup {
+  background: var(--green);
+  align-items: center; justify-content: center; padding: 40px 24px;
+}
+.setup-card {
+  background: var(--card); border-radius: 20px; padding: 28px 24px;
+  width: 100%; max-width: 400px; box-shadow: var(--shadow-lg);
+}
+.setup-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+.setup-sub { font-size: 13px; color: var(--text3); margin-bottom: 20px; line-height: 1.5; }
+.setup-note {
+  font-size: 12px; color: var(--text3); line-height: 1.5; margin-bottom: 20px;
+  background: var(--bg); border-radius: var(--r-sm); padding: 10px 12px;
+  border-left: 3px solid var(--green-mid);
+}
+.setup-field { margin-bottom: 16px; }
+.setup-field label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
+.setup-field input {
+  background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--r-sm);
+  color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  padding: 11px 13px; width: 100%; outline: none;
+}
+.setup-field input:focus { border-color: var(--green2); box-shadow: 0 0 0 3px rgba(30,92,46,0.08); }
+
+/* ── HEADER ── */
+#screen-app { background: var(--bg); }
+header {
+  background: var(--green); padding: 14px 16px 12px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.header-brand { display: flex; align-items: center; gap: 10px; }
+.header-icon { font-size: 22px; }
+.header-name { font-size: 17px; font-weight: 800; color: #fff; letter-spacing: -0.3px; line-height: 1; }
+.header-sub { font-size: 10px; color: rgba(255,255,255,0.55); letter-spacing: 1.5px; text-transform: uppercase; }
+.header-actions { display: flex; gap: 8px; }
+.header-btn {
+  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px; color: #fff; font-size: 13px; font-weight: 600;
+  padding: 7px 12px; cursor: pointer; font-family: 'Outfit', sans-serif; transition: all .2s;
+}
+.header-btn:active { background: rgba(255,255,255,0.28); }
+
+/* ── TABS ── */
+.tabs {
+  background: var(--card); border-bottom: 1px solid var(--border);
+  display: flex; padding: 0 12px;
+  position: sticky; top: 57px; z-index: 99; box-shadow: var(--shadow-sm);
+}
+.tab {
+  flex: 1; padding: 13px 6px; background: transparent;
+  border: none; border-bottom: 3px solid transparent; margin-bottom: -1px;
+  color: var(--text3); font-family: 'Outfit', sans-serif;
+  font-size: 13px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase;
+  cursor: pointer; transition: all .2s;
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+}
+.tab.active { color: var(--green); border-bottom-color: var(--green); }
+
+/* ── VIEWS ── */
+.view { display: none; padding: 16px; padding-bottom: 40px; }
+.view.active { display: block; }
+
+/* ── SCAN ── */
+.scan-box { background: var(--card); border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 14px; }
+.scan-top {
+  background: var(--green); padding: 10px 16px;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 700; letter-spacing: 1.2px;
+  text-transform: uppercase; color: rgba(255,255,255,0.9);
+}
+.video-area { position: relative; background: #111; min-height: 220px; display: flex; align-items: center; justify-content: center; }
+#videoEl { width: 100%; max-height: 270px; object-fit: cover; display: block; }
+.video-idle { text-align: center; padding: 48px 24px; color: rgba(255,255,255,0.35); }
+.video-idle .vi-icon { font-size: 44px; margin-bottom: 10px; }
+.video-idle p { font-size: 13px; line-height: 1.5; }
+.scan-corners { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+.scan-frame-inner { width: 76%; height: 54%; position: relative; }
+.sc { position: absolute; width: 18px; height: 18px; border-color: rgba(255,255,255,0.85); border-style: solid; }
+.sc-tl { top:0; left:0; border-width: 3px 0 0 3px; border-radius: 3px 0 0 0; }
+.sc-tr { top:0; right:0; border-width: 3px 3px 0 0; border-radius: 0 3px 0 0; }
+.sc-bl { bottom:0; left:0; border-width: 0 0 3px 3px; border-radius: 0 0 0 3px; }
+.sc-br { bottom:0; right:0; border-width: 0 3px 3px 0; border-radius: 0 0 3px 0; }
+.scan-line {
+  position: absolute; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(100,255,150,0.9) 40%, rgba(100,255,150,0.9) 60%, transparent);
+  box-shadow: 0 0 6px rgba(100,255,150,0.6);
+  animation: scanmove 2s ease-in-out infinite;
+}
+@keyframes scanmove { 0%{top:0;opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{top:100%;opacity:0} }
+#canvasEl { display: none; }
+.scan-btns { padding: 12px; display: flex; gap: 8px; }
+
+/* ── BUTTONS ── */
+.btn {
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 13px 16px; border: none; border-radius: var(--r-sm);
+  font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all .18s; -webkit-appearance: none; letter-spacing: 0.2px;
+}
+.btn:active { transform: scale(0.97); }
+.btn-green { background: var(--green); color: #fff; box-shadow: 0 3px 10px rgba(30,92,46,0.3); }
+.btn-green:hover { background: var(--green2); }
+.btn-outline { background: var(--card); color: var(--text2); border: 1.5px solid var(--border2); }
+.btn-outline:hover { border-color: var(--green); color: var(--green); }
+.btn-ghost { background: transparent; color: var(--text3); border: 1.5px solid var(--border); }
+.btn-danger-outline { background: var(--danger-pale); color: var(--danger); border: 1px solid #fecaca; }
+.btn-full { width: 100%; }
+.btn-sm { padding: 8px 12px; font-size: 12px; }
+.btn-icon { flex: none; padding: 13px; }
+
+/* ── STATUS ── */
+.status-bar {
+  display: flex; align-items: center; gap: 10px; padding: 11px 14px;
+  border-radius: var(--r-sm); font-size: 13px; font-weight: 500;
+  margin-bottom: 14px; border: 1px solid transparent;
+}
+.status-bar.scanning { background: var(--amber-pale); border-color: #fde68a; color: #92400e; }
+.status-bar.success { background: var(--green-pale); border-color: var(--green-mid); color: var(--green); }
+.status-bar.error { background: var(--danger-pale); border-color: #fecaca; color: var(--danger); }
+.spinner { width: 16px; height: 16px; flex-shrink: 0; border: 2px solid rgba(0,0,0,0.1); border-top-color: var(--amber); border-radius: 50%; animation: spin .7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── UPLOAD ── */
+.upload-zone {
+  background: var(--green-pale); border: 2px dashed var(--green-mid);
+  border-radius: var(--r); padding: 22px; text-align: center;
+  cursor: pointer; transition: all .2s; margin-bottom: 14px;
+}
+.upload-zone:hover { border-color: var(--green); background: #ddf0e0; }
+.upload-zone .uz-icon { font-size: 28px; margin-bottom: 6px; }
+.upload-zone p { font-size: 13px; color: var(--green2); font-weight: 600; }
+.upload-zone span { font-size: 12px; color: var(--text3); }
+#fileInput { display: none; }
+
+/* ── FORM ── */
+.form-card { background: var(--card); border-radius: var(--r); box-shadow: var(--shadow-sm); border: 1px solid var(--border); overflow: hidden; margin-bottom: 14px; }
+.form-card-header { padding: 11px 16px; background: var(--bg); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--earth2); }
+.form-body { padding: 16px; display: grid; gap: 13px; }
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+label { font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text3); }
+input, textarea {
+  background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--r-sm);
+  color: var(--text); font-family: 'Outfit', sans-serif; font-size: 15px;
+  padding: 10px 13px; width: 100%;
+  transition: border-color .18s, background .18s, box-shadow .18s;
+  outline: none; -webkit-appearance: none;
+}
+input:focus, textarea:focus { border-color: var(--green2); background: var(--card); box-shadow: 0 0 0 3px rgba(30,92,46,0.08); }
+input.ai-filled { border-color: var(--green3); background: var(--green-pale); }
+textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+::placeholder { color: var(--text3); opacity: 0.6; }
+
+/* ── CATEGORY ── */
+.cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 16px; }
+.cat-btn { padding: 13px 10px; border: 1.5px solid var(--border); border-radius: var(--r-sm); background: var(--bg); cursor: pointer; text-align: center; transition: all .18s; font-family: 'Outfit', sans-serif; }
+.cat-btn:active { transform: scale(0.97); }
+.cat-btn .cat-icon { font-size: 22px; margin-bottom: 5px; }
+.cat-btn .cat-label { font-size: 12px; font-weight: 600; color: var(--text2); line-height: 1.3; }
+.cat-btn.selected { border-color: var(--green); background: var(--green-pale); box-shadow: 0 0 0 1px var(--green); }
+.cat-btn.selected .cat-label { color: var(--green); }
+
+/* ── SUB FIELDS ── */
+.sub-fields { padding: 0 16px 16px; display: none; animation: fadeIn .2s ease; }
+.sub-fields.show { display: grid; gap: 12px; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:translateY(0); } }
+
+/* ── SELECT ── */
+.select-wrap { position: relative; }
+.select-wrap select {
+  background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--r-sm);
+  color: var(--text); font-family: 'Outfit', sans-serif; font-size: 15px;
+  padding: 10px 36px 10px 13px; width: 100%; outline: none;
+  cursor: pointer; -webkit-appearance: none; appearance: none; transition: border-color .18s;
+}
+.select-wrap select:focus { border-color: var(--green2); box-shadow: 0 0 0 3px rgba(30,92,46,0.08); }
+.select-wrap::after { content: '▾'; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 13px; pointer-events: none; }
+
+/* ── PILLS ── */
+.pill-group { display: flex; flex-wrap: wrap; gap: 7px; }
+.pill { padding: 7px 13px; border: 1.5px solid var(--border2); border-radius: 20px; background: var(--bg); font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 500; color: var(--text2); cursor: pointer; transition: all .18s; user-select: none; }
+.pill:active { transform: scale(0.96); }
+.pill.selected { background: var(--green); border-color: var(--green); color: #fff; }
+
+/* ── MOTIVO ── */
+.motivo-section { padding: 16px; display: grid; gap: 14px; }
+.motivo-label { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
+
+/* ── LEADS ── */
+.leads-toolbar { display: flex; gap: 10px; margin-bottom: 14px; }
+.leads-toolbar input { flex: 1; }
+.lead-card { background: var(--card); border-radius: var(--r); border: 1px solid var(--border); box-shadow: var(--shadow-sm); padding: 15px 16px; margin-bottom: 10px; border-left: 4px solid var(--green); transition: box-shadow .2s; }
+.lead-card:hover { box-shadow: var(--shadow); }
+.lead-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.lead-name { font-size: 18px; font-weight: 700; line-height: 1.1; }
+.lead-time { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text3); white-space: nowrap; margin-top: 2px; }
+.lead-org { font-size: 13px; color: var(--earth2); font-weight: 600; margin: 4px 0; }
+.lead-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+.chip { background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 3px 8px; font-size: 11px; color: var(--text2); font-family: 'JetBrains Mono', monospace; }
+.chip-cat { background: var(--green-pale); border-color: var(--green-mid); color: var(--green); font-family: 'Outfit', sans-serif; font-weight: 600; }
+.chip-hot { background: var(--amber-pale); border-color: #fde68a; color: #92400e; font-family: 'Outfit', sans-serif; font-weight: 600; }
+.lead-note { font-size: 12px; color: var(--text3); font-style: italic; margin-bottom: 10px; padding: 8px 10px; background: var(--bg); border-radius: 6px; }
+.lead-actions { display: flex; gap: 8px; padding-top: 10px; border-top: 1px solid var(--border); }
+.empty-state { text-align: center; padding: 64px 24px; color: var(--text3); }
+.empty-state .es-icon { font-size: 44px; margin-bottom: 14px; }
+.empty-state h3 { font-size: 18px; font-weight: 700; color: var(--text2); margin-bottom: 8px; }
+.empty-state p { font-size: 14px; line-height: 1.6; }
+
+/* ── SUBMIT ── */
+.submit-area { padding: 0 0 6px; display: flex; gap: 10px; }
+
+/* ── TOAST ── */
+#toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--text); color: #fff; padding: 11px 20px; border-radius: 24px; font-size: 14px; font-weight: 600; box-shadow: 0 6px 24px rgba(0,0,0,0.25); z-index: 9999; opacity: 0; transition: opacity .25s, transform .25s; pointer-events: none; white-space: nowrap; max-width: calc(100vw - 32px); }
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── MODAL ── */
+.modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 500; display: none; align-items: flex-end; justify-content: center; }
+.modal-bg.show { display: flex; }
+.modal { background: var(--card); border-radius: 20px 20px 0 0; padding: 28px 20px 36px; width: 100%; max-width: 480px; box-shadow: 0 -8px 40px rgba(0,0,0,0.2); animation: slideUp .2s ease; }
+@keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.modal h3 { font-size: 19px; font-weight: 700; margin-bottom: 8px; }
+.modal p { font-size: 14px; color: var(--text3); line-height: 1.5; margin-bottom: 24px; }
+.modal-btns { display: flex; gap: 10px; }
+</style>
+</head>
+<body>
+
+<!-- LOCK -->
+<div class="screen active" id="screen-lock">
+  <div class="lock-logo">
+    <div class="leaf">🌿</div>
+    <h1>KOMPOST CITY</h1>
+    <p>Lead Collector · Fiera</p>
+  </div>
+  <div class="lock-card">
+    <div class="lock-label">Inserisci PIN staff</div>
+    <div class="pin-dots">
+      <div class="pin-dot" id="d0"></div><div class="pin-dot" id="d1"></div>
+      <div class="pin-dot" id="d2"></div><div class="pin-dot" id="d3"></div>
+    </div>
+    <div class="pin-pad">
+      <button class="pin-key" onclick="pinPress('1')">1</button>
+      <button class="pin-key" onclick="pinPress('2')">2</button>
+      <button class="pin-key" onclick="pinPress('3')">3</button>
+      <button class="pin-key" onclick="pinPress('4')">4</button>
+      <button class="pin-key" onclick="pinPress('5')">5</button>
+      <button class="pin-key" onclick="pinPress('6')">6</button>
+      <button class="pin-key" onclick="pinPress('7')">7</button>
+      <button class="pin-key" onclick="pinPress('8')">8</button>
+      <button class="pin-key" onclick="pinPress('9')">9</button>
+      <button class="pin-key empty"></button>
+      <button class="pin-key" onclick="pinPress('0')">0</button>
+      <button class="pin-key del" onclick="pinDel()">⌫</button>
+    </div>
+    <div class="lock-error" id="lockError"></div>
+  </div>
+  <div class="lock-setup-link">
+    <button onclick="showSetup()">⚙️ Configurazione iniziale</button>
+  </div>
+</div>
+
+<!-- SETUP -->
+<div class="screen" id="screen-setup">
+  <div class="setup-card">
+    <div class="setup-title">⚙️ Configurazione</div>
+    <div class="setup-sub">Imposta il PIN staff e il PIN leads. La API key è configurata direttamente su Netlify — non serve inserirla qui.</div>
+    <div class="setup-note">🔒 La API key di Anthropic è salvata come variabile d'ambiente su Netlify. Non transita mai nel browser dei tablet.</div>
+    <div class="setup-field">
+      <label>PIN staff (4 cifre) — per aprire l'app</label>
+      <input type="password" id="setupPin" placeholder="es. 2025" maxlength="4" inputmode="numeric" autocomplete="off">
+    </div>
+    <div class="setup-field">
+      <label>PIN leads (4 cifre) — per vedere i contatti</label>
+      <input type="password" id="setupLeadsPin" placeholder="es. 9876" maxlength="4" inputmode="numeric" autocomplete="off">
+    </div>
+    <button class="btn btn-green btn-full" onclick="saveSetup()">Salva configurazione</button>
+    <button class="btn btn-ghost btn-full" style="margin-top:8px" onclick="showLock()">← Annulla</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="screen" id="screen-app">
+  <header>
+    <div class="header-brand">
+      <div class="header-icon">🌿</div>
+      <div>
+        <div class="header-name">KOMPOST CITY</div>
+        <div class="header-sub">Fiera · Contatti</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="header-btn" onclick="newContact()">+ Nuovo</button>
+      <button class="header-btn" onclick="lockApp()">🔒</button>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showView('scan')" id="tab-scan">📷 Scansiona</button>
+    <button class="tab" onclick="showView('form')" id="tab-form">📋 Modulo</button>
+    <button class="tab" onclick="checkLeadsPin()" id="tab-leads">👥 Lead</button>
+  </div>
+
+  <!-- SCAN -->
+  <div class="view active" id="view-scan">
+    <div class="scan-box">
+      <div class="scan-top">📷 Scansione biglietto da visita</div>
+      <div class="video-area">
+        <div class="video-idle" id="videoIdle">
+          <div class="vi-icon">📷</div>
+          <p>Avvia la fotocamera e inquadra il biglietto da visita</p>
+        </div>
+        <video id="videoEl" autoplay playsinline muted style="display:none"></video>
+        <canvas id="canvasEl"></canvas>
+        <div class="scan-corners" id="scanCorners" style="display:none">
+          <div class="scan-frame-inner">
+            <div class="sc sc-tl"></div><div class="sc sc-tr"></div>
+            <div class="sc sc-bl"></div><div class="sc sc-br"></div>
+            <div class="scan-line"></div>
+          </div>
+        </div>
+      </div>
+      <div class="scan-btns">
+        <button class="btn btn-green" id="btnCamera" onclick="toggleCamera()" style="flex:1">📷 Avvia fotocamera</button>
+        <button class="btn btn-outline btn-icon" id="btnCapture" onclick="captureAndScan()" disabled title="Cattura">⚡</button>
+      </div>
+    </div>
+    <div id="statusBar" style="display:none" class="status-bar"></div>
+    <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+      <div class="uz-icon">🖼️</div>
+      <p>Carica foto del biglietto</p>
+      <span>JPG, PNG, HEIC</span>
+      <input type="file" id="fileInput" accept="image/*" onchange="handleFile(event)">
+    </div>
+    <button class="btn btn-outline btn-full" onclick="showView('form')">✏️ Compila manualmente</button>
+  </div>
+
+  <!-- FORM -->
+  <div class="view" id="view-form">
+    <div class="form-card">
+      <div class="form-card-header">👤 Anagrafica visitatore</div>
+      <div class="form-body">
+        <div class="field-row">
+          <div class="field"><label>Nome</label><input type="text" id="f_nome" placeholder="Mario"></div>
+          <div class="field"><label>Cognome</label><input type="text" id="f_cognome" placeholder="Rossi"></div>
+        </div>
+        <div class="field"><label>Ruolo / Qualifica</label><input type="text" id="f_ruolo" placeholder="es. Assessore, Direttore, Ingegnere..."></div>
+        <div class="field-row">
+          <div class="field"><label>Cellulare</label><input type="tel" id="f_cell" placeholder="333 000 0000" inputmode="tel"></div>
+          <div class="field"><label>Email</label><input type="email" id="f_email" placeholder="mario@esempio.it" inputmode="email"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-card-header">🏢 Ente o Società</div>
+      <div class="form-body">
+        <div class="field"><label>Nome ente / società</label><input type="text" id="f_org" placeholder="es. Comune di Roma, Acme Srl..."></div>
+        <div class="field-row">
+          <div class="field"><label>CAP</label><input type="text" id="f_cap" placeholder="00100" inputmode="numeric"></div>
+          <div class="field"><label>Città</label><input type="text" id="f_citta" placeholder="Roma"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Telefono</label><input type="tel" id="f_tel" placeholder="06 0000000"></div>
+          <div class="field"><label>Email ufficio</label><input type="email" id="f_email_org" placeholder="info@esempio.it"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-card-header">🎯 Categoria visitatore</div>
+      <div class="cat-grid">
+        <button class="cat-btn" onclick="selectCat('pa')" id="cat-pa"><div class="cat-icon">🏛️</div><div class="cat-label">Pubblica Amministrazione</div></button>
+        <button class="cat-btn" onclick="selectCat('rifiuti')" id="cat-rifiuti"><div class="cat-icon">♻️</div><div class="cat-label">Azienda gestione rifiuti</div></button>
+        <button class="cat-btn" onclick="selectCat('ente')" id="cat-ente"><div class="cat-icon">🌿</div><div class="cat-label">Ente locale / Ass. ambientale</div></button>
+        <button class="cat-btn" onclick="selectCat('privato')" id="cat-privato"><div class="cat-icon">🏭</div><div class="cat-label">Azienda privata / Industriale</div></button>
+        <button class="cat-btn" onclick="selectCat('progettista')" id="cat-progettista"><div class="cat-icon">📐</div><div class="cat-label">Progettista / Ing. / Arch.</div></button>
+        <button class="cat-btn" onclick="selectCat('universita')" id="cat-universita"><div class="cat-icon">🎓</div><div class="cat-label">Università / Ente di ricerca</div></button>
+      </div>
+
+      <div class="sub-fields" id="sub-pa">
+        <div class="field"><label>Livello ente</label><div class="select-wrap"><select id="sf_pa_livello"><option value="">— seleziona —</option><option>Comune</option><option>Provincia</option><option>Regione</option><option>Governo nazionale</option><option>Ente pubblico nazionale</option></select></div></div>
+        <div class="field"><label>Comune / Provincia / Regione</label><input type="text" id="sf_pa_territorio" placeholder="es. Comune di Frosinone, Regione Lazio..."></div>
+        <div class="field"><label>Ruolo istituzionale</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'pa_ruolo')">Sindaco</div><div class="pill" onclick="togglePill(this,'pa_ruolo')">Assessore</div><div class="pill" onclick="togglePill(this,'pa_ruolo')">Consigliere</div><div class="pill" onclick="togglePill(this,'pa_ruolo')">Dirigente</div><div class="pill" onclick="togglePill(this,'pa_ruolo')">Funzionario tecnico</div><div class="pill" onclick="togglePill(this,'pa_ruolo')">Altro</div></div></div>
+        <div class="field"><label>Delega / competenza</label><input type="text" id="sf_pa_delega" placeholder="es. Ambiente, Urbanistica, Rifiuti..."></div>
+      </div>
+
+      <div class="sub-fields" id="sub-rifiuti">
+        <div class="field"><label>Tipo azienda</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'rif_tipo')">Pubblica (ATO/multiutility)</div><div class="pill" onclick="togglePill(this,'rif_tipo')">Privata</div><div class="pill" onclick="togglePill(this,'rif_tipo')">Mista</div></div></div>
+        <div class="field"><label>Bacino di utenza</label><input type="text" id="sf_rif_bacino" placeholder="es. Provincia di Roma, ATO5 Lazio..."></div>
+        <div class="field"><label>Ruolo in azienda</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'rif_ruolo')">CEO / DG</div><div class="pill" onclick="togglePill(this,'rif_ruolo')">Resp. tecnico</div><div class="pill" onclick="togglePill(this,'rif_ruolo')">Commerciale</div><div class="pill" onclick="togglePill(this,'rif_ruolo')">Altro</div></div></div>
+      </div>
+
+      <div class="sub-fields" id="sub-ente">
+        <div class="field"><label>Tipo ente</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'ente_tipo')">ARPA</div><div class="pill" onclick="togglePill(this,'ente_tipo')">Legambiente</div><div class="pill" onclick="togglePill(this,'ente_tipo')">WWF</div><div class="pill" onclick="togglePill(this,'ente_tipo')">Ass. categoria</div><div class="pill" onclick="togglePill(this,'ente_tipo')">Altro</div></div></div>
+        <div class="field"><label>Ambito territoriale</label><input type="text" id="sf_ente_territorio" placeholder="es. Lazio, Provincia di Viterbo..."></div>
+        <div class="field"><label>Ruolo nell'ente</label><input type="text" id="sf_ente_ruolo" placeholder="es. Presidente, Responsabile, Ricercatore..."></div>
+      </div>
+
+      <div class="sub-fields" id="sub-privato">
+        <div class="field"><label>Settore</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'priv_settore')">Alimentare</div><div class="pill" onclick="togglePill(this,'priv_settore')">GDO</div><div class="pill" onclick="togglePill(this,'priv_settore')">Ristorazione</div><div class="pill" onclick="togglePill(this,'priv_settore')">Industria</div><div class="pill" onclick="togglePill(this,'priv_settore')">Agricoltura</div><div class="pill" onclick="togglePill(this,'priv_settore')">Altro</div></div></div>
+        <div class="field"><label>Volume rifiuti organici</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'priv_volume')">Piccolo (&lt;500 kg/g)</div><div class="pill" onclick="togglePill(this,'priv_volume')">Medio (500–2000 kg/g)</div><div class="pill" onclick="togglePill(this,'priv_volume')">Grande (&gt;2000 kg/g)</div></div></div>
+        <div class="field"><label>Ruolo</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'priv_ruolo')">Titolare</div><div class="pill" onclick="togglePill(this,'priv_ruolo')">Direttore</div><div class="pill" onclick="togglePill(this,'priv_ruolo')">Resp. acquisti</div><div class="pill" onclick="togglePill(this,'priv_ruolo')">Altro</div></div></div>
+      </div>
+
+      <div class="sub-fields" id="sub-progettista">
+        <div class="field"><label>Tipo</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'prog_tipo')">Studio privato</div><div class="pill" onclick="togglePill(this,'prog_tipo')">Società ingegneria</div><div class="pill" onclick="togglePill(this,'prog_tipo')">Pubblica amm.</div></div></div>
+        <div class="field"><label>Specializzazione</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'prog_spec')">Ambientale</div><div class="pill" onclick="togglePill(this,'prog_spec')">Civile</div><div class="pill" onclick="togglePill(this,'prog_spec')">Impiantistico</div><div class="pill" onclick="togglePill(this,'prog_spec')">Architettura</div><div class="pill" onclick="togglePill(this,'prog_spec')">Altro</div></div></div>
+        <div class="field"><label>Opera prevalentemente su</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'prog_ambito')">Bandi pubblici</div><div class="pill" onclick="togglePill(this,'prog_ambito')">Progetti privati</div><div class="pill" onclick="togglePill(this,'prog_ambito')">Entrambi</div></div></div>
+      </div>
+
+      <div class="sub-fields" id="sub-universita">
+        <div class="field"><label>Tipo istituzione</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'uni_tipo')">Università pubblica</div><div class="pill" onclick="togglePill(this,'uni_tipo')">Università privata</div><div class="pill" onclick="togglePill(this,'uni_tipo')">CNR / ENEA</div><div class="pill" onclick="togglePill(this,'uni_tipo')">Centro ricerca privato</div></div></div>
+        <div class="field"><label>Area di ricerca</label><input type="text" id="sf_uni_area" placeholder="es. Ingegneria ambientale, Agraria..."></div>
+        <div class="field"><label>Ruolo</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'uni_ruolo')">Professore</div><div class="pill" onclick="togglePill(this,'uni_ruolo')">Ricercatore</div><div class="pill" onclick="togglePill(this,'uni_ruolo')">Dottorando</div><div class="pill" onclick="togglePill(this,'uni_ruolo')">Studente</div></div></div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-card-header">💡 Motivo della visita</div>
+      <div class="motivo-section">
+        <div>
+          <div class="motivo-label">Come ci hai conosciuto?</div>
+          <div class="pill-group" id="pg_source">
+            <div class="pill" onclick="selectRadio(this,'source')">🔍 Web / ricerca</div>
+            <div class="pill" onclick="selectRadio(this,'source')">📢 Passaparola</div>
+            <div class="pill" onclick="selectRadio(this,'source')">📰 Stampa</div>
+            <div class="pill" onclick="selectRadio(this,'source')">🎪 Fiera / evento</div>
+            <div class="pill" onclick="selectRadio(this,'source')">📧 Contatto diretto</div>
+            <div class="pill" onclick="selectRadio(this,'source')">🏛️ Indicazione istituzionale</div>
+          </div>
+        </div>
+        <div>
+          <div class="motivo-label">Obiettivo principale <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text3)">(max 2)</span></div>
+          <div class="pill-group" id="pg_obiettivo">
+            <div class="pill" onclick="togglePillMax(this,'obiettivo',2)">👀 Info / primo contatto</div>
+            <div class="pill" onclick="togglePillMax(this,'obiettivo',2)">📋 Valutazione bando/gara</div>
+            <div class="pill" onclick="togglePillMax(this,'obiettivo',2)">🏗️ Progettazione impianto</div>
+            <div class="pill" onclick="togglePillMax(this,'obiettivo',2)">💰 Budget disponibile</div>
+            <div class="pill" onclick="togglePillMax(this,'obiettivo',2)">🤝 Partnership</div>
+            <div class="pill" onclick="togglePillMax(this,'obiettivo',2)">🎓 Ricerca / studio</div>
+            <div class="pill" onclick="togglePillMax(this,'obiettivo',2)">🔄 Cliente esistente</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-card-header">📝 Note</div>
+      <div class="form-body">
+        <textarea id="f_note" placeholder="Annotazioni libere, dettagli discussione, follow-up specifici..."></textarea>
+      </div>
+    </div>
+
+    <div class="submit-area">
+      <button class="btn btn-ghost btn-icon" onclick="clearForm()" title="Cancella">🗑️</button>
+      <button class="btn btn-green" style="flex:1" onclick="saveLead()">✅ Salva contatto</button>
+    </div>
+  </div>
+
+  <!-- LEADS -->
+  <div class="view" id="view-leads">
+    <div class="leads-toolbar">
+      <input type="text" id="searchInput" placeholder="🔍 Cerca nome, ente, città..." oninput="renderLeads()">
+      <button class="btn btn-outline btn-sm" onclick="exportCSV()">⬇️ CSV</button>
+    </div>
+    <div id="leadsList"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <h3 id="modalTitle"></h3>
+    <p id="modalMsg"></p>
+    <div class="modal-btns">
+      <button class="btn btn-outline" style="flex:1" onclick="closeModal()">Annulla</button>
+      <button class="btn btn-danger-outline" style="flex:1" id="modalConfirmBtn">Conferma</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="leadsPinBg">
+  <div class="modal">
+    <h3>🔒 Accesso lead</h3>
+    <p>Inserisci il PIN per visualizzare i contatti raccolti.</p>
+    <div class="setup-field" style="margin-bottom:0">
+      <input type="password" id="leadsPinInput" placeholder="PIN leads" maxlength="4" inputmode="numeric" autocomplete="off">
+    </div>
+    <div style="height:16px"></div>
+    <div class="modal-btns">
+      <button class="btn btn-outline" style="flex:1" onclick="closeLeadsPin()">Annulla</button>
+      <button class="btn btn-green" style="flex:1" onclick="verifyLeadsPin()">Accedi</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── STATE ──
+let leads = JSON.parse(localStorage.getItem('kc_leads') || '[]');
+let stream = null;
+let currentCat = null;
+let pinBuffer = '';
+let pillState = {};
+let pendingDeleteId = null;
+let editingId = null;
+
+const STAFF_PIN_KEY = 'kc_staff_pin';
+const LEADS_PIN_KEY = 'kc_leads_pin';
+
+const CAT_LABELS = {
+  pa: '🏛️ Pubblica Amministrazione',
+  rifiuti: '♻️ Gestione rifiuti',
+  ente: '🌿 Ente / Ass. ambientale',
+  privato: '🏭 Azienda privata',
+  progettista: '📐 Progettista / Ing.',
+  universita: '🎓 Università / Ricerca'
+};
+
+// ── SCREENS ──
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function showLock() { pinBuffer = ''; updateDots(); showScreen('screen-lock'); }
+function showSetup() { showScreen('screen-setup'); }
+function lockApp() { showLock(); }
+function showApp() { showScreen('screen-app'); showView('scan'); }
+
+// ── PIN ──
+function pinPress(d) {
+  if (pinBuffer.length >= 4) return;
+  pinBuffer += d; updateDots();
+  if (pinBuffer.length === 4) setTimeout(verifyPin, 120);
+}
+function pinDel() { pinBuffer = pinBuffer.slice(0,-1); updateDots(); }
+function updateDots() {
+  for (let i=0;i<4;i++) document.getElementById('d'+i).classList.toggle('filled', i < pinBuffer.length);
+}
+function verifyPin() {
+  const stored = localStorage.getItem(STAFF_PIN_KEY) || '1234';
+  if (pinBuffer === stored) {
+    document.getElementById('lockError').textContent = '';
+    showApp();
+  } else {
+    document.getElementById('lockError').textContent = 'PIN errato. Riprova.';
+    pinBuffer = ''; updateDots();
+  }
+}
+
+// ── SETUP ──
+function saveSetup() {
+  const pin = document.getElementById('setupPin').value.trim();
+  const leadsPin = document.getElementById('setupLeadsPin').value.trim();
+  if (pin.length !== 4 || !/^\d{4}$/.test(pin)) { showToast('⚠️ PIN staff: 4 cifre numeriche'); return; }
+  if (leadsPin.length !== 4 || !/^\d{4}$/.test(leadsPin)) { showToast('⚠️ PIN leads: 4 cifre numeriche'); return; }
+  localStorage.setItem(STAFF_PIN_KEY, pin);
+  localStorage.setItem(LEADS_PIN_KEY, leadsPin);
+  showToast('✅ Configurazione salvata');
+  showLock();
+}
+
+// ── VIEWS ──
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+  if (name === 'leads') renderLeads();
+}
+function checkLeadsPin() {
+  document.getElementById('leadsPinInput').value = '';
+  document.getElementById('leadsPinBg').classList.add('show');
+  setTimeout(() => document.getElementById('leadsPinInput').focus(), 100);
+}
+function verifyLeadsPin() {
+  const stored = localStorage.getItem(LEADS_PIN_KEY) || '9999';
+  if (document.getElementById('leadsPinInput').value.trim() === stored) {
+    closeLeadsPin(); showView('leads');
+  } else { showToast('⚠️ PIN errato'); document.getElementById('leadsPinInput').value = ''; }
+}
+function closeLeadsPin() { document.getElementById('leadsPinBg').classList.remove('show'); }
+
+// ── CAMERA ──
+async function toggleCamera() { if (stream) stopCamera(); else await startCamera(); }
+async function startCamera() {
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 } } });
+    const v = document.getElementById('videoEl');
+    v.srcObject = stream; v.style.display = 'block';
+    document.getElementById('videoIdle').style.display = 'none';
+    document.getElementById('scanCorners').style.display = 'flex';
+    document.getElementById('btnCapture').disabled = false;
+    document.getElementById('btnCamera').innerHTML = '⏹ Ferma';
+  } catch(e) { showStatus('error','❌ Fotocamera non accessibile. Usa il caricamento immagine.'); }
+}
+function stopCamera() {
+  if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+  const v = document.getElementById('videoEl');
+  v.style.display = 'none'; v.srcObject = null;
+  document.getElementById('videoIdle').style.display = 'flex';
+  document.getElementById('scanCorners').style.display = 'none';
+  document.getElementById('btnCapture').disabled = true;
+  document.getElementById('btnCamera').innerHTML = '📷 Avvia fotocamera';
+}
+async function captureAndScan() {
+  const v = document.getElementById('videoEl');
+  const c = document.getElementById('canvasEl');
+  c.width = v.videoWidth; c.height = v.videoHeight;
+  c.getContext('2d').drawImage(v,0,0);
+  await scanWithAI(c.toDataURL('image/jpeg',0.88).split(',')[1]);
+}
+async function handleFile(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const r = new FileReader();
+  r.onload = async ev => await scanWithAI(ev.target.result.split(',')[1]);
+  r.readAsDataURL(file);
+  e.target.value = '';
+}
+
+// ── AI SCAN — calls Netlify function ──
+async function scanWithAI(b64) {
+  showStatus('scanning','🔍 Lettura biglietto in corso...');
+  showView('form');
+  try {
+    const res = await fetch('/.netlify/functions/scan', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ image: b64 })
+    });
+    const parsed = await res.json();
+    if (parsed.error) throw new Error(parsed.error);
+    fillForm(parsed);
+    showStatus('success','✅ Biglietto letto — verifica i campi evidenziati in verde');
+  } catch(e) {
+    showStatus('error','❌ Errore lettura: ' + e.message);
+  }
+}
+
+function fillForm(d) {
+  const map = ['nome','cognome','ruolo','cell','email','org','cap','citta','tel','email_org'];
+  map.forEach(k => {
+    const el = document.getElementById('f_'+k);
+    if (el && d[k]) { el.value = d[k]; el.classList.add('ai-filled'); el.addEventListener('input',()=>el.classList.remove('ai-filled'),{once:true}); }
+  });
+}
+
+function showStatus(type, msg) {
+  const b = document.getElementById('statusBar');
+  b.style.display = 'flex'; b.className = 'status-bar '+type;
+  b.innerHTML = type==='scanning' ? `<div class="spinner"></div><span>${msg}</span>` : `<span>${msg}</span>`;
+}
+
+// ── CATEGORY + PILLS ──
+function selectCat(cat) {
+  currentCat = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('.sub-fields').forEach(s => s.classList.remove('show'));
+  document.getElementById('cat-'+cat).classList.add('selected');
+  document.getElementById('sub-'+cat).classList.add('show');
+}
+function togglePill(el, group) {
+  el.classList.toggle('selected');
+  if (!pillState[group]) pillState[group] = new Set();
+  el.classList.contains('selected') ? pillState[group].add(el.textContent.trim()) : pillState[group].delete(el.textContent.trim());
+}
+function togglePillMax(el, group, max) {
+  if (!pillState[group]) pillState[group] = new Set();
+  if (el.classList.contains('selected')) { el.classList.remove('selected'); pillState[group].delete(el.textContent.trim()); }
+  else { if (pillState[group].size >= max) { showToast(`⚠️ Massimo ${max} scelte`); return; } el.classList.add('selected'); pillState[group].add(el.textContent.trim()); }
+}
+function selectRadio(el, group) {
+  el.parentElement.querySelectorAll('.pill').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+  pillState[group] = new Set([el.textContent.trim()]);
+}
+function getPill(group) { return pillState[group] ? [...pillState[group]].join(', ') : ''; }
+function getVal(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+
+function collectSubFields() {
+  if (!currentCat) return {};
+  switch(currentCat) {
+    case 'pa': return { pa_livello:getVal('sf_pa_livello'), pa_territorio:getVal('sf_pa_territorio'), pa_ruolo:getPill('pa_ruolo'), pa_delega:getVal('sf_pa_delega') };
+    case 'rifiuti': return { rif_tipo:getPill('rif_tipo'), rif_bacino:getVal('sf_rif_bacino'), rif_ruolo:getPill('rif_ruolo') };
+    case 'ente': return { ente_tipo:getPill('ente_tipo'), ente_territorio:getVal('sf_ente_territorio'), ente_ruolo:getVal('sf_ente_ruolo') };
+    case 'privato': return { priv_settore:getPill('priv_settore'), priv_volume:getPill('priv_volume'), priv_ruolo:getPill('priv_ruolo') };
+    case 'progettista': return { prog_tipo:getPill('prog_tipo'), prog_spec:getPill('prog_spec'), prog_ambito:getPill('prog_ambito') };
+    case 'universita': return { uni_tipo:getPill('uni_tipo'), uni_area:getVal('sf_uni_area'), uni_ruolo:getPill('uni_ruolo') };
+  }
+  return {};
+}
+
+// ── SAVE ──
+function saveLead() {
+  const lead = {
+    id: editingId || Date.now(),
+    ts: editingId ? (leads.find(l=>l.id===editingId)?.ts || new Date().toISOString()) : new Date().toISOString(),
+    nome:getVal('f_nome'), cognome:getVal('f_cognome'), ruolo:getVal('f_ruolo'),
+    cell:getVal('f_cell'), email:getVal('f_email'), org:getVal('f_org'),
+    cap:getVal('f_cap'), citta:getVal('f_citta'), tel:getVal('f_tel'), email_org:getVal('f_email_org'),
+    categoria:currentCat, sub:collectSubFields(),
+    source:getPill('source'), obiettivo:getPill('obiettivo'), note:getVal('f_note')
+  };
+  if (editingId) { const i=leads.findIndex(l=>l.id===editingId); if(i!==-1) leads[i]=lead; editingId=null; }
+  else leads.unshift(lead);
+  save(); clearForm(); showToast('✅ Contatto salvato!'); showView('leads');
+}
+
+function clearForm() {
+  ['f_nome','f_cognome','f_ruolo','f_cell','f_email','f_org','f_cap','f_citta','f_tel','f_email_org','f_note',
+   'sf_pa_livello','sf_pa_territorio','sf_pa_delega','sf_rif_bacino','sf_ente_territorio','sf_ente_ruolo','sf_uni_area']
+  .forEach(id => { const el=document.getElementById(id); if(el){el.value='';el.classList.remove('ai-filled');} });
+  currentCat=null; pillState={}; editingId=null;
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('selected'));
+  document.querySelectorAll('.sub-fields').forEach(s=>s.classList.remove('show'));
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('selected'));
+  document.getElementById('statusBar').style.display='none';
+}
+function newContact() { clearForm(); showView('form'); }
+
+// ── RENDER LEADS ──
+function renderLeads() {
+  const q=(document.getElementById('searchInput')?.value||'').toLowerCase();
+  const filtered=leads.filter(l=>[l.nome,l.cognome,l.org,l.ruolo,l.citta,l.categoria].join(' ').toLowerCase().includes(q));
+  const c=document.getElementById('leadsList');
+  if (!filtered.length) {
+    c.innerHTML=`<div class="empty-state"><div class="es-icon">👥</div><h3>Nessun contatto ancora</h3><p>Scansiona un biglietto da visita o compila il modulo per aggiungere il primo lead.</p></div>`;
+    return;
+  }
+  c.innerHTML=filtered.map(l => {
+    const d=new Date(l.ts);
+    const ts=d.toLocaleDateString('it-IT',{day:'2-digit',month:'short'})+' '+d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    const name=[l.nome,l.cognome].filter(Boolean).join(' ')||'— senza nome —';
+    const catLabel=l.categoria?CAT_LABELS[l.categoria]:'';
+    const isHot=l.obiettivo&&(l.obiettivo.includes('Budget')||l.obiettivo.includes('bando')||l.obiettivo.includes('Progettazione'));
+    const subSummary=l.sub?Object.values(l.sub).filter(Boolean).join(' · '):'';
+    return `<div class="lead-card">
+      <div class="lead-top"><div class="lead-name">${name}</div><div class="lead-time">${ts}</div></div>
+      ${l.org?`<div class="lead-org">🏢 ${l.org}</div>`:''}
+      ${l.ruolo?`<div style="font-size:12px;color:var(--text3);margin-bottom:8px">${l.ruolo}</div>`:''}
+      <div class="lead-chips">
+        ${catLabel?`<span class="chip chip-cat">${catLabel}</span>`:''}
+        ${isHot?`<span class="chip chip-hot">🔥 Alta priorità</span>`:''}
+        ${l.cell?`<span class="chip">📱 ${l.cell}</span>`:''}
+        ${l.email?`<span class="chip">✉️ ${l.email}</span>`:''}
+        ${l.citta?`<span class="chip">📍 ${l.citta}</span>`:''}
+      </div>
+      ${subSummary?`<div style="font-size:12px;color:var(--text3);margin-bottom:6px;line-height:1.5">${subSummary}</div>`:''}
+      ${l.source?`<div style="font-size:12px;color:var(--text3);margin-bottom:3px">📌 ${l.source}</div>`:''}
+      ${l.obiettivo?`<div style="font-size:12px;color:var(--text3);margin-bottom:8px">🎯 ${l.obiettivo}</div>`:''}
+      ${l.note?`<div class="lead-note">📝 ${l.note}</div>`:''}
+      <div class="lead-actions">
+        <button class="btn btn-outline btn-sm" onclick="editLead(${l.id})">✏️ Modifica</button>
+        <button class="btn btn-danger-outline btn-sm" onclick="confirmDelete(${l.id})">🗑️</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function editLead(id) {
+  const l=leads.find(x=>x.id===id); if(!l) return;
+  clearForm(); editingId=id;
+  ['nome','cognome','ruolo','cell','email','org','cap','citta','tel','email_org','note'].forEach(k=>{
+    const el=document.getElementById('f_'+k); if(el&&l[k]) el.value=l[k];
+  });
+  if(l.categoria) selectCat(l.categoria);
+  showView('form'); showToast('✏️ Modifica contatto');
+}
+function confirmDelete(id) {
+  pendingDeleteId=id;
+  const l=leads.find(x=>x.id===id);
+  const name=[l?.nome,l?.cognome].filter(Boolean).join(' ')||'questo contatto';
+  document.getElementById('modalTitle').textContent='Elimina contatto';
+  document.getElementById('modalMsg').textContent=`Eliminare ${name}? L'operazione non è reversibile.`;
+  document.getElementById('modalConfirmBtn').onclick=()=>{deleteLead(pendingDeleteId);closeModal();};
+  document.getElementById('modalBg').classList.add('show');
+}
+function deleteLead(id) { leads=leads.filter(x=>x.id!==id); save(); renderLeads(); showToast('🗑️ Contatto eliminato'); }
+function closeModal() { document.getElementById('modalBg').classList.remove('show'); }
+
+// ── CSV ──
+function exportCSV() {
+  if (!leads.length) { showToast('Nessun contatto da esportare'); return; }
+  const headers=['Data','Nome','Cognome','Ruolo','Cellulare','Email','Organizzazione','CAP','Città','Telefono','Email org','Categoria','Dettagli categoria','Come conosciuto','Obiettivo','Note'];
+  const rows=leads.map(l=>[
+    new Date(l.ts).toLocaleString('it-IT'),
+    l.nome,l.cognome,l.ruolo,l.cell,l.email,l.org,l.cap,l.citta,l.tel,l.email_org,
+    l.categoria?CAT_LABELS[l.categoria]:'',
+    l.sub?Object.values(l.sub).filter(Boolean).join(' | '):'',
+    l.source,l.obiettivo,l.note
+  ].map(v=>`"${(v||'').replace(/"/g,'""')}"`));
+  const csv=[headers.join(','),...rows.map(r=>r.join(','))].join('\n');
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url;
+  a.download=`citynet_leads_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click(); URL.revokeObjectURL(url);
+  showToast(`📥 Esportati ${leads.length} contatti`);
+}
+
+// ── UTILS ──
+function save() { localStorage.setItem('kc_leads',JSON.stringify(leads)); }
+let toastT;
+function showToast(msg) {
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+document.getElementById('modalBg').addEventListener('click',function(e){if(e.target===this)closeModal();});
+document.getElementById('leadsPinBg').addEventListener('click',function(e){if(e.target===this)closeLeadsPin();});
+document.getElementById('leadsPinInput').addEventListener('keydown',function(e){if(e.key==='Enter')verifyLeadsPin();});
+
+if (!localStorage.getItem(STAFF_PIN_KEY)) showSetup();
+</script>
+</body>
+</html>
