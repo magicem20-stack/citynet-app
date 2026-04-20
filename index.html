@@ -794,8 +794,14 @@ function saveLead() {
   };
   if (editingId) { const i=leads.findIndex(l=>l.id===editingId); if(i!==-1) leads[i]=lead; editingId=null; }
   else leads.unshift(lead);
-  save(); clearForm(); showToast('✅ Contatto salvato!'); showView('leads');
-}
+  save();
+  // Sync to Google Sheet (fire and forget — non blocca il salvataggio locale)
+  fetch('/.netlify/functions/save-lead', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(lead)
+  }).catch(e => console.warn('Sheet sync failed:', e.message));
+  clearForm(); showToast('✅ Contatto salvato!'); showView('leads');
 
 function clearForm() {
   ['f_nome','f_cognome','f_ruolo','f_cell','f_email','f_org','f_cap','f_citta','f_tel','f_email_org','f_note',
