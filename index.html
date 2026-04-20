@@ -691,8 +691,15 @@ async function captureAndScan() {
   const v = document.getElementById('videoEl');
   const c = document.getElementById('canvasEl');
   c.width = v.videoWidth; c.height = v.videoHeight;
-  c.getContext('2d').drawImage(v,0,0);
-  await scanWithAI(c.toDataURL('image/jpeg',0.88).split(',')[1]);
+  c.getContext('2d').drawImage(v, 0, 0);
+  const b64 = await new Promise(resolve => {
+    c.toBlob(blob => {
+      const r = new FileReader();
+      r.onload = e => resolve(e.target.result.split(',')[1]);
+      r.readAsDataURL(blob);
+    }, 'image/png');
+  });
+  await scanWithAI(b64);
 }
 async function handleFile(e) {
   const file = e.target.files[0]; if (!file) return;
