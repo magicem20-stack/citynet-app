@@ -1,3 +1,12 @@
+function detectMimeType(base64) {
+  const sig = base64.substring(0, 16);
+  if (sig.startsWith('/9j/')) return 'image/jpeg';
+  if (sig.startsWith('iVBORw')) return 'image/png';
+  if (sig.startsWith('R0lGOD')) return 'image/gif';
+  if (sig.startsWith('UklGR')) return 'image/webp';
+  return 'image/png';
+}
+
 exports.handler = async function(event) {
   const headers = {
     'Content-Type': 'application/json',
@@ -33,7 +42,8 @@ exports.handler = async function(event) {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Campo image mancante.' }) };
   }
 
-  console.log('Image received, length:', image.length);
+  const mimeType = detectMimeType(image);
+  console.log('Image received, length:', image.length, 'detected type:', mimeType);
 
   const prompt = `Extract all contact data visible on this business card. Return ONLY a valid JSON object with these exact keys (use null if not found):
 {
@@ -66,7 +76,7 @@ No preamble, no markdown, no explanation. Only the JSON object.`;
         messages: [{
           role: 'user',
           content: [
-            { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: image } },
+            { type: 'image', source: { type: 'base64', media_type: mimeType, data: image } },
             { type: 'text', text: prompt }
           ]
         }]
