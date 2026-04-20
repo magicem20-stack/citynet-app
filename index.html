@@ -691,15 +691,8 @@ async function captureAndScan() {
   const v = document.getElementById('videoEl');
   const c = document.getElementById('canvasEl');
   c.width = v.videoWidth; c.height = v.videoHeight;
-  c.getContext('2d').drawImage(v, 0, 0);
-  const b64 = await new Promise(resolve => {
-    c.toBlob(blob => {
-      const r = new FileReader();
-      r.onload = e => resolve(e.target.result.split(',')[1]);
-      r.readAsDataURL(blob);
-    }, 'image/png');
-  });
-  await scanWithAI(b64);
+  c.getContext('2d').drawImage(v,0,0);
+  await scanWithAI(c.toDataURL('image/jpeg',0.88).split(',')[1]);
 }
 async function handleFile(e) {
   const file = e.target.files[0]; if (!file) return;
@@ -795,13 +788,9 @@ function saveLead() {
   if (editingId) { const i=leads.findIndex(l=>l.id===editingId); if(i!==-1) leads[i]=lead; editingId=null; }
   else leads.unshift(lead);
   save();
-  // Sync to Google Sheet (fire and forget — non blocca il salvataggio locale)
-  fetch('/.netlify/functions/save-lead', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(lead)
-  }).catch(e => console.warn('Sheet sync failed:', e.message));
+  fetch('/.netlify/functions/save-lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(lead) }).catch(e => console.warn('Sheet sync failed:', e.message));
   clearForm(); showToast('✅ Contatto salvato!'); showView('leads');
+}
 
 function clearForm() {
   ['f_nome','f_cognome','f_ruolo','f_cell','f_email','f_org','f_cap','f_citta','f_tel','f_email_org','f_note',
