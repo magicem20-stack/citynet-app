@@ -7,304 +7,210 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --green: #1e5c2e;
-  --green2: #2d7a40;
-  --green3: #3d9954;
-  --green-pale: #edf5ef;
-  --green-mid: #c8e6cc;
-  --earth: #5a3e28;
-  --earth2: #7a5535;
-  --amber: #d97706;
-  --amber-pale: #fef3c7;
-  --bg: #f7f6f3;
-  --card: #ffffff;
-  --border: #e2ddd6;
-  --border2: #ccc7be;
-  --text: #1a1a18;
-  --text2: #4a4a46;
-  --text3: #8a8a84;
-  --danger: #b91c1c;
-  --danger-pale: #fef2f2;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
-  --shadow: 0 4px 16px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.05);
-  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
-  --r: 12px;
-  --r-sm: 8px;
+  --green:#1e5c2e;--green2:#2d7a40;--green3:#3d9954;--green-pale:#edf5ef;--green-mid:#c8e6cc;
+  --earth:#5a3e28;--earth2:#7a5535;--amber:#d97706;--amber-pale:#fef3c7;
+  --bg:#f7f6f3;--card:#ffffff;--border:#e2ddd6;--border2:#ccc7be;
+  --text:#1a1a18;--text2:#4a4a46;--text3:#8a8a84;
+  --danger:#b91c1c;--danger-pale:#fef2f2;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+  --shadow:0 4px 16px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.05);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.12);
+  --r:12px;--r-sm:8px;
 }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.screen{display:none;min-height:100vh}
+.screen.active{display:flex;flex-direction:column}
 
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+/* LOCK */
+#screen-lock{background:var(--green);align-items:center;justify-content:center;padding:40px 24px}
+.lock-logo{text-align:center;margin-bottom:48px}
+.lock-logo .leaf{font-size:52px;margin-bottom:12px}
+.lock-logo h1{font-size:28px;font-weight:800;color:#fff;letter-spacing:-.5px}
+.lock-logo p{font-size:13px;color:rgba(255,255,255,.6);letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+.lock-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:32px 24px;width:100%;max-width:340px;backdrop-filter:blur(10px)}
+.lock-label{font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:14px;text-align:center}
+.pin-dots{display:flex;justify-content:center;gap:14px;margin-bottom:28px}
+.pin-dot{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.4);transition:all .2s}
+.pin-dot.filled{background:#fff;border-color:#fff;transform:scale(1.1)}
+.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pin-key{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);border-radius:12px;color:#fff;font-family:'Outfit',sans-serif;font-size:22px;font-weight:600;padding:16px;cursor:pointer;transition:all .15s;text-align:center}
+.pin-key:active{background:rgba(255,255,255,.28);transform:scale(.95)}
+.pin-key.del{font-size:16px;color:rgba(255,255,255,.7)}
+.pin-key.empty{background:transparent;border-color:transparent;cursor:default}
+.lock-error{color:#fca5a5;font-size:13px;text-align:center;margin-top:14px;min-height:20px;font-weight:500}
+.lock-setup-link{text-align:center;margin-top:24px}
+.lock-setup-link button{background:transparent;border:none;color:rgba(255,255,255,.45);font-size:12px;cursor:pointer;font-family:'Outfit',sans-serif;text-decoration:underline}
 
-body {
-  font-family: 'Outfit', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  font-size: 15px;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-}
+/* LANG BAR */
+.lang-bar{display:flex;gap:6px;justify-content:center;margin-top:20px}
+.lang-btn{padding:5px 12px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:6px;color:rgba(255,255,255,.6);font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.5px}
+.lang-btn.active{background:rgba(255,255,255,.25);color:#fff;border-color:rgba(255,255,255,.5)}
 
-.screen { display: none; min-height: 100vh; }
-.screen.active { display: flex; flex-direction: column; }
+/* SETUP */
+#screen-setup{background:var(--green);align-items:center;justify-content:center;padding:40px 24px}
+.setup-card{background:var(--card);border-radius:20px;padding:28px 24px;width:100%;max-width:400px;box-shadow:var(--shadow-lg)}
+.setup-title{font-size:20px;font-weight:700;margin-bottom:6px}
+.setup-sub{font-size:13px;color:var(--text3);margin-bottom:20px;line-height:1.5}
+.setup-note{font-size:12px;color:var(--text3);line-height:1.5;margin-bottom:20px;background:var(--bg);border-radius:var(--r-sm);padding:10px 12px;border-left:3px solid var(--green-mid)}
+.setup-field{margin-bottom:16px}
+.setup-field label{display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.setup-field input{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;padding:11px 13px;width:100%;outline:none}
+.setup-field input:focus{border-color:var(--green2);box-shadow:0 0 0 3px rgba(30,92,46,.08)}
 
-/* ── LOCK ── */
-#screen-lock {
-  background: var(--green);
-  align-items: center; justify-content: center; padding: 40px 24px;
-}
-.lock-logo { text-align: center; margin-bottom: 48px; }
-.lock-logo .leaf { font-size: 52px; margin-bottom: 12px; }
-.lock-logo h1 { font-size: 28px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
-.lock-logo p { font-size: 13px; color: rgba(255,255,255,0.6); letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
-.lock-card {
-  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 20px; padding: 32px 24px; width: 100%; max-width: 340px;
-  backdrop-filter: blur(10px);
-}
-.lock-label { font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 14px; text-align: center; }
-.pin-dots { display: flex; justify-content: center; gap: 14px; margin-bottom: 28px; }
-.pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.4); transition: all .2s; }
-.pin-dot.filled { background: #fff; border-color: #fff; transform: scale(1.1); }
-.pin-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.pin-key {
-  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 12px; color: #fff; font-family: 'Outfit', sans-serif;
-  font-size: 22px; font-weight: 600; padding: 16px; cursor: pointer;
-  transition: all .15s; text-align: center;
-}
-.pin-key:active { background: rgba(255,255,255,0.28); transform: scale(0.95); }
-.pin-key.del { font-size: 16px; color: rgba(255,255,255,0.7); }
-.pin-key.empty { background: transparent; border-color: transparent; cursor: default; }
-.lock-error { color: #fca5a5; font-size: 13px; text-align: center; margin-top: 14px; min-height: 20px; font-weight: 500; }
-.lock-setup-link { text-align: center; margin-top: 24px; }
-.lock-setup-link button { background: transparent; border: none; color: rgba(255,255,255,0.45); font-size: 12px; cursor: pointer; font-family: 'Outfit', sans-serif; text-decoration: underline; }
+/* HEADER */
+#screen-app{background:var(--bg)}
+header{background:var(--green);padding:14px 16px 12px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.header-brand{display:flex;align-items:center;gap:10px}
+.header-icon{font-size:22px}
+.header-name{font-size:17px;font-weight:800;color:#fff;letter-spacing:-.3px;line-height:1}
+.header-sub{font-size:10px;color:rgba(255,255,255,.55);letter-spacing:1.5px;text-transform:uppercase}
+.header-actions{display:flex;gap:8px}
+.header-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:8px;color:#fff;font-size:13px;font-weight:600;padding:7px 12px;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s}
+.header-btn:active{background:rgba(255,255,255,.28)}
 
-/* ── SETUP ── */
-#screen-setup {
-  background: var(--green);
-  align-items: center; justify-content: center; padding: 40px 24px;
-}
-.setup-card {
-  background: var(--card); border-radius: 20px; padding: 28px 24px;
-  width: 100%; max-width: 400px; box-shadow: var(--shadow-lg);
-}
-.setup-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
-.setup-sub { font-size: 13px; color: var(--text3); margin-bottom: 20px; line-height: 1.5; }
-.setup-note {
-  font-size: 12px; color: var(--text3); line-height: 1.5; margin-bottom: 20px;
-  background: var(--bg); border-radius: var(--r-sm); padding: 10px 12px;
-  border-left: 3px solid var(--green-mid);
-}
-.setup-field { margin-bottom: 16px; }
-.setup-field label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
-.setup-field input {
-  background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--r-sm);
-  color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 13px;
-  padding: 11px 13px; width: 100%; outline: none;
-}
-.setup-field input:focus { border-color: var(--green2); box-shadow: 0 0 0 3px rgba(30,92,46,0.08); }
+/* APP LANG BAR */
+.app-lang-bar{background:var(--earth);display:flex;gap:4px;padding:6px 16px}
+.app-lang-btn{padding:3px 10px;border:1px solid rgba(255,255,255,.2);border-radius:4px;background:transparent;color:rgba(255,255,255,.55);font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.5px}
+.app-lang-btn.active{background:rgba(255,255,255,.2);color:#fff;border-color:rgba(255,255,255,.4)}
 
-/* ── HEADER ── */
-#screen-app { background: var(--bg); }
-header {
-  background: var(--green); padding: 14px 16px 12px;
-  display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0; z-index: 100;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
-.header-brand { display: flex; align-items: center; gap: 10px; }
-.header-icon { font-size: 22px; }
-.header-name { font-size: 17px; font-weight: 800; color: #fff; letter-spacing: -0.3px; line-height: 1; }
-.header-sub { font-size: 10px; color: rgba(255,255,255,0.55); letter-spacing: 1.5px; text-transform: uppercase; }
-.header-actions { display: flex; gap: 8px; }
-.header-btn {
-  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 8px; color: #fff; font-size: 13px; font-weight: 600;
-  padding: 7px 12px; cursor: pointer; font-family: 'Outfit', sans-serif; transition: all .2s;
-}
-.header-btn:active { background: rgba(255,255,255,0.28); }
+/* TABS */
+.tabs{background:var(--card);border-bottom:1px solid var(--border);display:flex;padding:0 12px;position:sticky;top:57px;z-index:99;box-shadow:var(--shadow-sm)}
+.tab{flex:1;padding:13px 6px;background:transparent;border:none;border-bottom:3px solid transparent;margin-bottom:-1px;color:var(--text3);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:5px}
+.tab.active{color:var(--green);border-bottom-color:var(--green)}
 
-/* ── TABS ── */
-.tabs {
-  background: var(--card); border-bottom: 1px solid var(--border);
-  display: flex; padding: 0 12px;
-  position: sticky; top: 57px; z-index: 99; box-shadow: var(--shadow-sm);
-}
-.tab {
-  flex: 1; padding: 13px 6px; background: transparent;
-  border: none; border-bottom: 3px solid transparent; margin-bottom: -1px;
-  color: var(--text3); font-family: 'Outfit', sans-serif;
-  font-size: 13px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase;
-  cursor: pointer; transition: all .2s;
-  display: flex; align-items: center; justify-content: center; gap: 5px;
-}
-.tab.active { color: var(--green); border-bottom-color: var(--green); }
+/* VIEWS */
+.view{display:none;padding:16px;padding-bottom:40px}
+.view.active{display:block}
 
-/* ── VIEWS ── */
-.view { display: none; padding: 16px; padding-bottom: 40px; }
-.view.active { display: block; }
+/* SCAN */
+.scan-box{background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);margin-bottom:14px}
+.scan-top{background:var(--green);padding:10px 16px;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.9)}
+.video-area{position:relative;background:#111;min-height:220px;display:flex;align-items:center;justify-content:center}
+#videoEl{width:100%;max-height:270px;object-fit:cover;display:block}
+.video-idle{text-align:center;padding:48px 24px;color:rgba(255,255,255,.35)}
+.video-idle .vi-icon{font-size:44px;margin-bottom:10px}
+.video-idle p{font-size:13px;line-height:1.5}
+.scan-corners{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.scan-frame-inner{width:76%;height:54%;position:relative}
+.sc{position:absolute;width:18px;height:18px;border-color:rgba(255,255,255,.85);border-style:solid}
+.sc-tl{top:0;left:0;border-width:3px 0 0 3px;border-radius:3px 0 0 0}
+.sc-tr{top:0;right:0;border-width:3px 3px 0 0;border-radius:0 3px 0 0}
+.sc-bl{bottom:0;left:0;border-width:0 0 3px 3px;border-radius:0 0 0 3px}
+.sc-br{bottom:0;right:0;border-width:0 3px 3px 0;border-radius:0 0 3px 0}
+.scan-line{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(100,255,150,.9) 40%,rgba(100,255,150,.9) 60%,transparent);box-shadow:0 0 6px rgba(100,255,150,.6);animation:scanmove 2s ease-in-out infinite}
+@keyframes scanmove{0%{top:0;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}
+#canvasEl{display:none}
+.scan-btns{padding:12px;display:flex;gap:8px}
 
-/* ── SCAN ── */
-.scan-box { background: var(--card); border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 14px; }
-.scan-top {
-  background: var(--green); padding: 10px 16px;
-  display: flex; align-items: center; gap: 8px;
-  font-size: 12px; font-weight: 700; letter-spacing: 1.2px;
-  text-transform: uppercase; color: rgba(255,255,255,0.9);
-}
-.video-area { position: relative; background: #111; min-height: 220px; display: flex; align-items: center; justify-content: center; }
-#videoEl { width: 100%; max-height: 270px; object-fit: cover; display: block; }
-.video-idle { text-align: center; padding: 48px 24px; color: rgba(255,255,255,0.35); }
-.video-idle .vi-icon { font-size: 44px; margin-bottom: 10px; }
-.video-idle p { font-size: 13px; line-height: 1.5; }
-.scan-corners { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
-.scan-frame-inner { width: 76%; height: 54%; position: relative; }
-.sc { position: absolute; width: 18px; height: 18px; border-color: rgba(255,255,255,0.85); border-style: solid; }
-.sc-tl { top:0; left:0; border-width: 3px 0 0 3px; border-radius: 3px 0 0 0; }
-.sc-tr { top:0; right:0; border-width: 3px 3px 0 0; border-radius: 0 3px 0 0; }
-.sc-bl { bottom:0; left:0; border-width: 0 0 3px 3px; border-radius: 0 0 0 3px; }
-.sc-br { bottom:0; right:0; border-width: 0 3px 3px 0; border-radius: 0 0 3px 0; }
-.scan-line {
-  position: absolute; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(100,255,150,0.9) 40%, rgba(100,255,150,0.9) 60%, transparent);
-  box-shadow: 0 0 6px rgba(100,255,150,0.6);
-  animation: scanmove 2s ease-in-out infinite;
-}
-@keyframes scanmove { 0%{top:0;opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{top:100%;opacity:0} }
-#canvasEl { display: none; }
-.scan-btns { padding: 12px; display: flex; gap: 8px; }
+/* BUTTONS */
+.btn{display:flex;align-items:center;justify-content:center;gap:7px;padding:13px 16px;border:none;border-radius:var(--r-sm);font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .18s;-webkit-appearance:none;letter-spacing:.2px}
+.btn:active{transform:scale(.97)}
+.btn-green{background:var(--green);color:#fff;box-shadow:0 3px 10px rgba(30,92,46,.3)}
+.btn-green:hover{background:var(--green2)}
+.btn-outline{background:var(--card);color:var(--text2);border:1.5px solid var(--border2)}
+.btn-outline:hover{border-color:var(--green);color:var(--green)}
+.btn-ghost{background:transparent;color:var(--text3);border:1.5px solid var(--border)}
+.btn-danger-outline{background:var(--danger-pale);color:var(--danger);border:1px solid #fecaca}
+.btn-full{width:100%}
+.btn-sm{padding:8px 12px;font-size:12px}
+.btn-icon{flex:none;padding:13px}
 
-/* ── BUTTONS ── */
-.btn {
-  display: flex; align-items: center; justify-content: center; gap: 7px;
-  padding: 13px 16px; border: none; border-radius: var(--r-sm);
-  font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700;
-  cursor: pointer; transition: all .18s; -webkit-appearance: none; letter-spacing: 0.2px;
-}
-.btn:active { transform: scale(0.97); }
-.btn-green { background: var(--green); color: #fff; box-shadow: 0 3px 10px rgba(30,92,46,0.3); }
-.btn-green:hover { background: var(--green2); }
-.btn-outline { background: var(--card); color: var(--text2); border: 1.5px solid var(--border2); }
-.btn-outline:hover { border-color: var(--green); color: var(--green); }
-.btn-ghost { background: transparent; color: var(--text3); border: 1.5px solid var(--border); }
-.btn-danger-outline { background: var(--danger-pale); color: var(--danger); border: 1px solid #fecaca; }
-.btn-full { width: 100%; }
-.btn-sm { padding: 8px 12px; font-size: 12px; }
-.btn-icon { flex: none; padding: 13px; }
+/* STATUS */
+.status-bar{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:var(--r-sm);font-size:13px;font-weight:500;margin-bottom:14px;border:1px solid transparent}
+.status-bar.scanning{background:var(--amber-pale);border-color:#fde68a;color:#92400e}
+.status-bar.success{background:var(--green-pale);border-color:var(--green-mid);color:var(--green)}
+.status-bar.error{background:var(--danger-pale);border-color:#fecaca;color:var(--danger)}
+.spinner{width:16px;height:16px;flex-shrink:0;border:2px solid rgba(0,0,0,.1);border-top-color:var(--amber);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-/* ── STATUS ── */
-.status-bar {
-  display: flex; align-items: center; gap: 10px; padding: 11px 14px;
-  border-radius: var(--r-sm); font-size: 13px; font-weight: 500;
-  margin-bottom: 14px; border: 1px solid transparent;
-}
-.status-bar.scanning { background: var(--amber-pale); border-color: #fde68a; color: #92400e; }
-.status-bar.success { background: var(--green-pale); border-color: var(--green-mid); color: var(--green); }
-.status-bar.error { background: var(--danger-pale); border-color: #fecaca; color: var(--danger); }
-.spinner { width: 16px; height: 16px; flex-shrink: 0; border: 2px solid rgba(0,0,0,0.1); border-top-color: var(--amber); border-radius: 50%; animation: spin .7s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
+/* UPLOAD */
+.upload-zone{background:var(--green-pale);border:2px dashed var(--green-mid);border-radius:var(--r);padding:22px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:14px}
+.upload-zone:hover{border-color:var(--green);background:#ddf0e0}
+.upload-zone .uz-icon{font-size:28px;margin-bottom:6px}
+.upload-zone p{font-size:13px;color:var(--green2);font-weight:600}
+.upload-zone span{font-size:12px;color:var(--text3)}
+#fileInput{display:none}
 
-/* ── UPLOAD ── */
-.upload-zone {
-  background: var(--green-pale); border: 2px dashed var(--green-mid);
-  border-radius: var(--r); padding: 22px; text-align: center;
-  cursor: pointer; transition: all .2s; margin-bottom: 14px;
-}
-.upload-zone:hover { border-color: var(--green); background: #ddf0e0; }
-.upload-zone .uz-icon { font-size: 28px; margin-bottom: 6px; }
-.upload-zone p { font-size: 13px; color: var(--green2); font-weight: 600; }
-.upload-zone span { font-size: 12px; color: var(--text3); }
-#fileInput { display: none; }
+/* FORM */
+.form-card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow-sm);border:1px solid var(--border);overflow:hidden;margin-bottom:14px}
+.form-card-header{padding:11px 16px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--earth2)}
+.form-body{padding:16px;display:grid;gap:13px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+label{font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--text3)}
+input,textarea{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-family:'Outfit',sans-serif;font-size:15px;padding:10px 13px;width:100%;transition:border-color .18s,background .18s,box-shadow .18s;outline:none;-webkit-appearance:none}
+input:focus,textarea:focus{border-color:var(--green2);background:var(--card);box-shadow:0 0 0 3px rgba(30,92,46,.08)}
+input.ai-filled{border-color:var(--green3);background:var(--green-pale)}
+textarea{resize:vertical;min-height:80px;line-height:1.5}
+::placeholder{color:var(--text3);opacity:.6}
 
-/* ── FORM ── */
-.form-card { background: var(--card); border-radius: var(--r); box-shadow: var(--shadow-sm); border: 1px solid var(--border); overflow: hidden; margin-bottom: 14px; }
-.form-card-header { padding: 11px 16px; background: var(--bg); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--earth2); }
-.form-body { padding: 16px; display: grid; gap: 13px; }
-.field { display: flex; flex-direction: column; gap: 5px; }
-.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-label { font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text3); }
-input, textarea {
-  background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--r-sm);
-  color: var(--text); font-family: 'Outfit', sans-serif; font-size: 15px;
-  padding: 10px 13px; width: 100%;
-  transition: border-color .18s, background .18s, box-shadow .18s;
-  outline: none; -webkit-appearance: none;
-}
-input:focus, textarea:focus { border-color: var(--green2); background: var(--card); box-shadow: 0 0 0 3px rgba(30,92,46,0.08); }
-input.ai-filled { border-color: var(--green3); background: var(--green-pale); }
-textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
-::placeholder { color: var(--text3); opacity: 0.6; }
+/* CATEGORY */
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:16px}
+.cat-btn{padding:13px 10px;border:1.5px solid var(--border);border-radius:var(--r-sm);background:var(--bg);cursor:pointer;text-align:center;transition:all .18s;font-family:'Outfit',sans-serif}
+.cat-btn:active{transform:scale(.97)}
+.cat-btn .cat-icon{font-size:22px;margin-bottom:5px}
+.cat-btn .cat-label{font-size:12px;font-weight:600;color:var(--text2);line-height:1.3}
+.cat-btn.selected{border-color:var(--green);background:var(--green-pale);box-shadow:0 0 0 1px var(--green)}
+.cat-btn.selected .cat-label{color:var(--green)}
 
-/* ── CATEGORY ── */
-.cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 16px; }
-.cat-btn { padding: 13px 10px; border: 1.5px solid var(--border); border-radius: var(--r-sm); background: var(--bg); cursor: pointer; text-align: center; transition: all .18s; font-family: 'Outfit', sans-serif; }
-.cat-btn:active { transform: scale(0.97); }
-.cat-btn .cat-icon { font-size: 22px; margin-bottom: 5px; }
-.cat-btn .cat-label { font-size: 12px; font-weight: 600; color: var(--text2); line-height: 1.3; }
-.cat-btn.selected { border-color: var(--green); background: var(--green-pale); box-shadow: 0 0 0 1px var(--green); }
-.cat-btn.selected .cat-label { color: var(--green); }
+/* SUB FIELDS */
+.sub-fields{padding:0 16px 16px;display:none;animation:fadeIn .2s ease}
+.sub-fields.show{display:grid;gap:12px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── SUB FIELDS ── */
-.sub-fields { padding: 0 16px 16px; display: none; animation: fadeIn .2s ease; }
-.sub-fields.show { display: grid; gap: 12px; }
-@keyframes fadeIn { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:translateY(0); } }
+/* SELECT */
+.select-wrap{position:relative}
+.select-wrap select{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-family:'Outfit',sans-serif;font-size:15px;padding:10px 36px 10px 13px;width:100%;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;transition:border-color .18s}
+.select-wrap select:focus{border-color:var(--green2);box-shadow:0 0 0 3px rgba(30,92,46,.08)}
+.select-wrap::after{content:'▾';position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:13px;pointer-events:none}
 
-/* ── SELECT ── */
-.select-wrap { position: relative; }
-.select-wrap select {
-  background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--r-sm);
-  color: var(--text); font-family: 'Outfit', sans-serif; font-size: 15px;
-  padding: 10px 36px 10px 13px; width: 100%; outline: none;
-  cursor: pointer; -webkit-appearance: none; appearance: none; transition: border-color .18s;
-}
-.select-wrap select:focus { border-color: var(--green2); box-shadow: 0 0 0 3px rgba(30,92,46,0.08); }
-.select-wrap::after { content: '▾'; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 13px; pointer-events: none; }
+/* PILLS */
+.pill-group{display:flex;flex-wrap:wrap;gap:7px}
+.pill{padding:7px 13px;border:1.5px solid var(--border2);border-radius:20px;background:var(--bg);font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;transition:all .18s;user-select:none}
+.pill:active{transform:scale(.96)}
+.pill.selected{background:var(--green);border-color:var(--green);color:#fff}
 
-/* ── PILLS ── */
-.pill-group { display: flex; flex-wrap: wrap; gap: 7px; }
-.pill { padding: 7px 13px; border: 1.5px solid var(--border2); border-radius: 20px; background: var(--bg); font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 500; color: var(--text2); cursor: pointer; transition: all .18s; user-select: none; }
-.pill:active { transform: scale(0.96); }
-.pill.selected { background: var(--green); border-color: var(--green); color: #fff; }
+/* MOTIVO */
+.motivo-section{padding:16px;display:grid;gap:14px}
+.motivo-label{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
 
-/* ── MOTIVO ── */
-.motivo-section { padding: 16px; display: grid; gap: 14px; }
-.motivo-label { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
+/* LEADS */
+.leads-toolbar{display:flex;gap:10px;margin-bottom:14px}
+.leads-toolbar input{flex:1}
+.lead-card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--shadow-sm);padding:15px 16px;margin-bottom:10px;border-left:4px solid var(--green);transition:box-shadow .2s}
+.lead-card:hover{box-shadow:var(--shadow)}
+.lead-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.lead-name{font-size:18px;font-weight:700;line-height:1.1}
+.lead-time{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);white-space:nowrap;margin-top:2px}
+.lead-org{font-size:13px;color:var(--earth2);font-weight:600;margin:4px 0}
+.lead-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.chip{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:3px 8px;font-size:11px;color:var(--text2);font-family:'JetBrains Mono',monospace}
+.chip-cat{background:var(--green-pale);border-color:var(--green-mid);color:var(--green);font-family:'Outfit',sans-serif;font-weight:600}
+.chip-hot{background:var(--amber-pale);border-color:#fde68a;color:#92400e;font-family:'Outfit',sans-serif;font-weight:600}
+.lead-note{font-size:12px;color:var(--text3);font-style:italic;margin-bottom:10px;padding:8px 10px;background:var(--bg);border-radius:6px}
+.lead-actions{display:flex;gap:8px;padding-top:10px;border-top:1px solid var(--border)}
+.empty-state{text-align:center;padding:64px 24px;color:var(--text3)}
+.empty-state .es-icon{font-size:44px;margin-bottom:14px}
+.empty-state h3{font-size:18px;font-weight:700;color:var(--text2);margin-bottom:8px}
+.empty-state p{font-size:14px;line-height:1.6}
 
-/* ── LEADS ── */
-.leads-toolbar { display: flex; gap: 10px; margin-bottom: 14px; }
-.leads-toolbar input { flex: 1; }
-.lead-card { background: var(--card); border-radius: var(--r); border: 1px solid var(--border); box-shadow: var(--shadow-sm); padding: 15px 16px; margin-bottom: 10px; border-left: 4px solid var(--green); transition: box-shadow .2s; }
-.lead-card:hover { box-shadow: var(--shadow); }
-.lead-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
-.lead-name { font-size: 18px; font-weight: 700; line-height: 1.1; }
-.lead-time { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text3); white-space: nowrap; margin-top: 2px; }
-.lead-org { font-size: 13px; color: var(--earth2); font-weight: 600; margin: 4px 0; }
-.lead-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
-.chip { background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 3px 8px; font-size: 11px; color: var(--text2); font-family: 'JetBrains Mono', monospace; }
-.chip-cat { background: var(--green-pale); border-color: var(--green-mid); color: var(--green); font-family: 'Outfit', sans-serif; font-weight: 600; }
-.chip-hot { background: var(--amber-pale); border-color: #fde68a; color: #92400e; font-family: 'Outfit', sans-serif; font-weight: 600; }
-.lead-note { font-size: 12px; color: var(--text3); font-style: italic; margin-bottom: 10px; padding: 8px 10px; background: var(--bg); border-radius: 6px; }
-.lead-actions { display: flex; gap: 8px; padding-top: 10px; border-top: 1px solid var(--border); }
-.empty-state { text-align: center; padding: 64px 24px; color: var(--text3); }
-.empty-state .es-icon { font-size: 44px; margin-bottom: 14px; }
-.empty-state h3 { font-size: 18px; font-weight: 700; color: var(--text2); margin-bottom: 8px; }
-.empty-state p { font-size: 14px; line-height: 1.6; }
+/* SUBMIT */
+.submit-area{padding:0 0 6px;display:flex;gap:10px}
 
-/* ── SUBMIT ── */
-.submit-area { padding: 0 0 6px; display: flex; gap: 10px; }
+/* TOAST */
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:#fff;padding:11px 20px;border-radius:24px;font-size:14px;font-weight:600;box-shadow:0 6px 24px rgba(0,0,0,.25);z-index:9999;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;white-space:nowrap;max-width:calc(100vw - 32px)}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* ── TOAST ── */
-#toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--text); color: #fff; padding: 11px 20px; border-radius: 24px; font-size: 14px; font-weight: 600; box-shadow: 0 6px 24px rgba(0,0,0,0.25); z-index: 9999; opacity: 0; transition: opacity .25s, transform .25s; pointer-events: none; white-space: nowrap; max-width: calc(100vw - 32px); }
-#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-/* ── MODAL ── */
-.modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 500; display: none; align-items: flex-end; justify-content: center; }
-.modal-bg.show { display: flex; }
-.modal { background: var(--card); border-radius: 20px 20px 0 0; padding: 28px 20px 36px; width: 100%; max-width: 480px; box-shadow: 0 -8px 40px rgba(0,0,0,0.2); animation: slideUp .2s ease; }
-@keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-.modal h3 { font-size: 19px; font-weight: 700; margin-bottom: 8px; }
-.modal p { font-size: 14px; color: var(--text3); line-height: 1.5; margin-bottom: 24px; }
-.modal-btns { display: flex; gap: 10px; }
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;display:none;align-items:flex-end;justify-content:center}
+.modal-bg.show{display:flex}
+.modal{background:var(--card);border-radius:20px 20px 0 0;padding:28px 20px 36px;width:100%;max-width:480px;box-shadow:0 -8px 40px rgba(0,0,0,.2);animation:slideUp .2s ease}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal h3{font-size:19px;font-weight:700;margin-bottom:8px}
+.modal p{font-size:14px;color:var(--text3);line-height:1.5;margin-bottom:24px}
+.modal-btns{display:flex;gap:10px}
 </style>
 </head>
 <body>
@@ -314,10 +220,10 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
   <div class="lock-logo">
     <div class="leaf">🌿</div>
     <h1>KOMPOST CITY</h1>
-    <p>Lead Collector · Fiera</p>
+    <p id="lock-sub">Lead Collector · Fiera</p>
   </div>
   <div class="lock-card">
-    <div class="lock-label">Inserisci PIN staff</div>
+    <div class="lock-label" id="lock-label">Inserisci PIN staff</div>
     <div class="pin-dots">
       <div class="pin-dot" id="d0"></div><div class="pin-dot" id="d1"></div>
       <div class="pin-dot" id="d2"></div><div class="pin-dot" id="d3"></div>
@@ -338,27 +244,33 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
     </div>
     <div class="lock-error" id="lockError"></div>
   </div>
-  <div class="lock-setup-link">
-    <button onclick="showSetup()">⚙️ Configurazione iniziale</button>
+  <div class="lang-bar">
+    <button class="lang-btn active" onclick="setLang('it')">IT</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+    <button class="lang-btn" onclick="setLang('fr')">FR</button>
+  </div>
+  <div class="lock-setup-link" style="margin-top:12px">
+    <button onclick="showSetup()" id="setup-link-btn">⚙️ Configurazione iniziale</button>
   </div>
 </div>
 
 <!-- SETUP -->
 <div class="screen" id="screen-setup">
   <div class="setup-card">
-    <div class="setup-title">⚙️ Configurazione</div>
-    <div class="setup-sub">Imposta il PIN staff e il PIN leads. La API key è configurata direttamente su Netlify — non serve inserirla qui.</div>
-    <div class="setup-note">🔒 La API key di Anthropic è salvata come variabile d'ambiente su Netlify. Non transita mai nel browser dei tablet.</div>
+    <div class="setup-title">⚙️ <span id="setup-title-txt">Configurazione</span></div>
+    <div class="setup-sub" id="setup-sub-txt">Imposta il PIN staff e il PIN leads. La API key è configurata su Netlify.</div>
+    <div class="setup-note" id="setup-note-txt">🔒 La API key Anthropic è salvata come variabile d'ambiente su Netlify. Non transita nel browser.</div>
     <div class="setup-field">
-      <label>PIN staff (4 cifre) — per aprire l'app</label>
+      <label id="setup-pin-lbl">PIN staff (4 cifre) — per aprire l'app</label>
       <input type="password" id="setupPin" placeholder="es. 2025" maxlength="4" inputmode="numeric" autocomplete="off">
     </div>
     <div class="setup-field">
-      <label>PIN leads (4 cifre) — per vedere i contatti</label>
+      <label id="setup-leads-lbl">PIN leads (4 cifre) — per vedere i contatti</label>
       <input type="password" id="setupLeadsPin" placeholder="es. 9876" maxlength="4" inputmode="numeric" autocomplete="off">
     </div>
-    <button class="btn btn-green btn-full" onclick="saveSetup()">Salva configurazione</button>
-    <button class="btn btn-ghost btn-full" style="margin-top:8px" onclick="showLock()">← Annulla</button>
+    <button class="btn btn-green btn-full" onclick="saveSetup()" id="setup-save-btn">Salva configurazione</button>
+    <button class="btn btn-ghost btn-full" style="margin-top:8px" onclick="showLock()" id="setup-cancel-btn">← Annulla</button>
   </div>
 </div>
 
@@ -369,29 +281,36 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
       <div class="header-icon">🌿</div>
       <div>
         <div class="header-name">KOMPOST CITY</div>
-        <div class="header-sub">Fiera · Contatti</div>
+        <div class="header-sub" id="header-sub">Fiera · Contatti</div>
       </div>
     </div>
     <div class="header-actions">
-      <button class="header-btn" onclick="newContact()">+ Nuovo</button>
+      <button class="header-btn" onclick="newContact()" id="btn-new">+ Nuovo</button>
       <button class="header-btn" onclick="lockApp()">🔒</button>
     </div>
   </header>
 
+  <div class="app-lang-bar">
+    <button class="app-lang-btn active" onclick="setLang('it')">IT</button>
+    <button class="app-lang-btn" onclick="setLang('en')">EN</button>
+    <button class="app-lang-btn" onclick="setLang('es')">ES</button>
+    <button class="app-lang-btn" onclick="setLang('fr')">FR</button>
+  </div>
+
   <div class="tabs">
-    <button class="tab active" onclick="showView('scan')" id="tab-scan">📷 Scansiona</button>
-    <button class="tab" onclick="showView('form')" id="tab-form">📋 Modulo</button>
-    <button class="tab" onclick="checkLeadsPin()" id="tab-leads">👥 Lead</button>
+    <button class="tab active" onclick="showView('scan')" id="tab-scan">📷 <span id="tab-scan-lbl">Scansiona</span></button>
+    <button class="tab" onclick="showView('form')" id="tab-form">📋 <span id="tab-form-lbl">Modulo</span></button>
+    <button class="tab" onclick="checkLeadsPin()" id="tab-leads">👥 <span id="tab-leads-lbl">Lead</span></button>
   </div>
 
   <!-- SCAN -->
   <div class="view active" id="view-scan">
     <div class="scan-box">
-      <div class="scan-top">📷 Scansione biglietto da visita</div>
+      <div class="scan-top">📷 <span id="scan-title">Scansione biglietto da visita</span></div>
       <div class="video-area">
         <div class="video-idle" id="videoIdle">
           <div class="vi-icon">📷</div>
-          <p>Avvia la fotocamera e inquadra il biglietto da visita</p>
+          <p id="scan-idle-txt">Avvia la fotocamera e inquadra il biglietto da visita</p>
         </div>
         <video id="videoEl" autoplay playsinline muted style="display:none"></video>
         <canvas id="canvasEl"></canvas>
@@ -404,148 +323,166 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
         </div>
       </div>
       <div class="scan-btns">
-        <button class="btn btn-green" id="btnCamera" onclick="toggleCamera()" style="flex:1">📷 Avvia fotocamera</button>
+        <button class="btn btn-green" id="btnCamera" onclick="toggleCamera()" style="flex:1">📷 <span id="btn-camera-txt">Avvia fotocamera</span></button>
         <button class="btn btn-outline btn-icon" id="btnCapture" onclick="captureAndScan()" disabled title="Cattura">⚡</button>
       </div>
     </div>
     <div id="statusBar" style="display:none" class="status-bar"></div>
     <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
       <div class="uz-icon">🖼️</div>
-      <p>Carica foto del biglietto</p>
+      <p id="upload-txt">Carica foto del biglietto</p>
       <span>JPG, PNG, HEIC</span>
       <input type="file" id="fileInput" accept="image/*" onchange="handleFile(event)">
     </div>
-    <button class="btn btn-outline btn-full" onclick="showView('form')">✏️ Compila manualmente</button>
+    <button class="btn btn-outline btn-full" onclick="showView('form')" id="btn-manual">✏️ <span id="btn-manual-txt">Compila manualmente</span></button>
   </div>
 
   <!-- FORM -->
   <div class="view" id="view-form">
+
+    <!-- Anagrafica -->
     <div class="form-card">
-      <div class="form-card-header">👤 Anagrafica visitatore</div>
+      <div class="form-card-header">👤 <span id="section-anagrafica">Anagrafica visitatore</span></div>
       <div class="form-body">
         <div class="field-row">
-          <div class="field"><label>Nome</label><input type="text" id="f_nome" placeholder="Mario"></div>
-          <div class="field"><label>Cognome</label><input type="text" id="f_cognome" placeholder="Rossi"></div>
+          <div class="field"><label id="lbl-nome">Nome</label><input type="text" id="f_nome" placeholder="Mario" autocomplete="given-name"></div>
+          <div class="field"><label id="lbl-cognome">Cognome</label><input type="text" id="f_cognome" placeholder="Rossi" autocomplete="family-name"></div>
         </div>
-        <div class="field"><label>Ruolo / Qualifica</label><input type="text" id="f_ruolo" placeholder="es. Assessore, Direttore, Ingegnere..."></div>
+        <div class="field"><label id="lbl-ruolo">Ruolo / Qualifica</label><input type="text" id="f_ruolo" placeholder="es. Assessore, Direttore..."></div>
         <div class="field-row">
-          <div class="field"><label>Cellulare</label><input type="tel" id="f_cell" placeholder="333 000 0000" inputmode="tel"></div>
-          <div class="field"><label>Email</label><input type="email" id="f_email" placeholder="mario@esempio.it" inputmode="email"></div>
+          <div class="field"><label id="lbl-cell">Cellulare</label><input type="tel" id="f_cell" placeholder="333 000 0000" inputmode="tel"></div>
+          <div class="field"><label id="lbl-email">Email</label><input type="email" id="f_email" placeholder="mario@esempio.it" inputmode="email"></div>
         </div>
       </div>
     </div>
 
+    <!-- Ente / Società -->
     <div class="form-card">
-      <div class="form-card-header">🏢 Ente o Società</div>
+      <div class="form-card-header">🏢 <span id="section-ente">Ente o Società</span></div>
       <div class="form-body">
-        <div class="field"><label>Nome ente / società</label><input type="text" id="f_org" placeholder="es. Comune di Roma, Acme Srl..."></div>
-        <div class="field-row">
-          <div class="field"><label>CAP</label><input type="text" id="f_cap" placeholder="00100" inputmode="numeric"></div>
-          <div class="field"><label>Città</label><input type="text" id="f_citta" placeholder="Roma"></div>
+        <div class="field"><label id="lbl-org">Nome ente / società</label><input type="text" id="f_org" placeholder="es. Comune di Roma, Acme Srl..." autocomplete="organization"></div>
+        <div class="field-row-3">
+          <div class="field"><label id="lbl-cap">CAP</label><input type="text" id="f_cap" placeholder="00100" inputmode="numeric"></div>
+          <div class="field"><label id="lbl-citta">Città</label><input type="text" id="f_citta" placeholder="Roma"></div>
+          <div class="field"><label id="lbl-provincia">Provincia</label><input type="text" id="f_provincia" placeholder="RM" maxlength="4"></div>
         </div>
+        <div class="field"><label id="lbl-regione">Regione <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text3);font-size:10px">(opzionale)</span></label><input type="text" id="f_regione" placeholder="es. Lazio, Lombardia..."></div>
         <div class="field-row">
-          <div class="field"><label>Telefono</label><input type="tel" id="f_tel" placeholder="06 0000000"></div>
-          <div class="field"><label>Email ufficio</label><input type="email" id="f_email_org" placeholder="info@esempio.it"></div>
+          <div class="field"><label id="lbl-tel">Telefono</label><input type="tel" id="f_tel" placeholder="06 0000000"></div>
+          <div class="field"><label id="lbl-email-org">Email ufficio</label><input type="email" id="f_email_org" placeholder="info@esempio.it"></div>
         </div>
       </div>
     </div>
 
+    <!-- Categoria -->
     <div class="form-card">
-      <div class="form-card-header">🎯 Categoria visitatore</div>
+      <div class="form-card-header">🎯 <span id="section-categoria">Categoria visitatore</span></div>
       <div class="cat-grid">
-        <button class="cat-btn" onclick="selectCat('pa')" id="cat-pa"><div class="cat-icon">🏛️</div><div class="cat-label">Pubblica Amministrazione</div></button>
-        <button class="cat-btn" onclick="selectCat('rifiuti')" id="cat-rifiuti"><div class="cat-icon">♻️</div><div class="cat-label">Azienda gestione rifiuti</div></button>
-        <button class="cat-btn" onclick="selectCat('ente')" id="cat-ente"><div class="cat-icon">🌿</div><div class="cat-label">Ente locale / Ass. ambientale</div></button>
-        <button class="cat-btn" onclick="selectCat('privato')" id="cat-privato"><div class="cat-icon">🏭</div><div class="cat-label">Azienda privata / Industriale</div></button>
-        <button class="cat-btn" onclick="selectCat('progettista')" id="cat-progettista"><div class="cat-icon">📐</div><div class="cat-label">Progettista / Ing. / Arch.</div></button>
-        <button class="cat-btn" onclick="selectCat('universita')" id="cat-universita"><div class="cat-icon">🎓</div><div class="cat-label">Università / Ente di ricerca</div></button>
+        <button class="cat-btn" onclick="selectCat('pa')" id="cat-pa"><div class="cat-icon">🏛️</div><div class="cat-label" id="cat-lbl-pa">Pubblica Amministrazione</div></button>
+        <button class="cat-btn" onclick="selectCat('rifiuti')" id="cat-rifiuti"><div class="cat-icon">♻️</div><div class="cat-label" id="cat-lbl-rifiuti">Azienda gestione rifiuti</div></button>
+        <button class="cat-btn" onclick="selectCat('ente')" id="cat-ente"><div class="cat-icon">🌿</div><div class="cat-label" id="cat-lbl-ente">Ente locale / Ass. ambientale</div></button>
+        <button class="cat-btn" onclick="selectCat('privato')" id="cat-privato"><div class="cat-icon">🏭</div><div class="cat-label" id="cat-lbl-privato">Azienda privata / Industriale</div></button>
+        <button class="cat-btn" onclick="selectCat('progettista')" id="cat-progettista"><div class="cat-icon">📐</div><div class="cat-label" id="cat-lbl-progettista">Progettista / Ing. / Arch.</div></button>
+        <button class="cat-btn" onclick="selectCat('universita')" id="cat-universita"><div class="cat-icon">🎓</div><div class="cat-label" id="cat-lbl-universita">Università / Ente di ricerca</div></button>
       </div>
 
+      <!-- Sub PA -->
       <div class="sub-fields" id="sub-pa">
-        <div class="field"><label>Livello ente</label><div class="select-wrap"><select id="sf_pa_livello"><option value="">— seleziona —</option><option>Comune</option><option>Provincia</option><option>Regione</option><option>Governo nazionale</option><option>Ente pubblico nazionale</option></select></div></div>
-        <div class="field"><label>Comune / Provincia / Regione</label><input type="text" id="sf_pa_territorio" placeholder="es. Comune di Frosinone, Regione Lazio..."></div>
-        <div class="field"><label>Ruolo istituzionale</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'pa_ruolo')">Sindaco</div><div class="pill" onclick="togglePill(this,'pa_ruolo')">Assessore</div><div class="pill" onclick="togglePill(this,'pa_ruolo')">Consigliere</div><div class="pill" onclick="togglePill(this,'pa_ruolo')">Dirigente</div><div class="pill" onclick="togglePill(this,'pa_ruolo')">Funzionario tecnico</div><div class="pill" onclick="togglePill(this,'pa_ruolo')">Altro</div></div></div>
-        <div class="field"><label>Delega / competenza</label><input type="text" id="sf_pa_delega" placeholder="es. Ambiente, Urbanistica, Rifiuti..."></div>
+        <div class="field"><label id="sf-pa-livello-lbl">Livello ente</label><div class="select-wrap"><select id="sf_pa_livello"><option value="" id="sf-pa-select-default">— seleziona —</option><option>Comune</option><option>Provincia</option><option>Regione</option><option>Governo nazionale</option><option>Ente pubblico nazionale</option></select></div></div>
+        <div class="field"><label id="sf-pa-territorio-lbl">Nome Comune / Ente</label><input type="text" id="sf_pa_territorio" placeholder="es. Comune di Frosinone..."></div>
+        <div class="field-row">
+          <div class="field"><label id="sf-pa-provincia-lbl">Provincia</label><input type="text" id="sf_pa_provincia" placeholder="FR" maxlength="4"></div>
+          <div class="field"><label id="sf-pa-regione-lbl">Regione</label><input type="text" id="sf_pa_regione" placeholder="Lazio"></div>
+        </div>
+        <div class="field"><label id="sf-pa-ruolo-lbl">Ruolo istituzionale</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'pa_ruolo')">Sindaco</div><div class="pill" onclick="togglePill(this,'pa_ruolo')">Assessore</div><div class="pill" onclick="togglePill(this,'pa_ruolo')">Consigliere</div><div class="pill" onclick="togglePill(this,'pa_ruolo')">Dirigente</div><div class="pill" onclick="togglePill(this,'pa_ruolo')">Funzionario tecnico</div><div class="pill" onclick="togglePill(this,'pa_ruolo')">Altro</div></div></div>
+        <div class="field"><label id="sf-pa-delega-lbl">Delega / competenza</label><input type="text" id="sf_pa_delega" placeholder="es. Ambiente, Rifiuti..."></div>
       </div>
 
+      <!-- Sub Rifiuti -->
       <div class="sub-fields" id="sub-rifiuti">
-        <div class="field"><label>Tipo azienda</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'rif_tipo')">Pubblica (ATO/multiutility)</div><div class="pill" onclick="togglePill(this,'rif_tipo')">Privata</div><div class="pill" onclick="togglePill(this,'rif_tipo')">Mista</div></div></div>
-        <div class="field"><label>Bacino di utenza</label><input type="text" id="sf_rif_bacino" placeholder="es. Provincia di Roma, ATO5 Lazio..."></div>
-        <div class="field"><label>Ruolo in azienda</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'rif_ruolo')">CEO / DG</div><div class="pill" onclick="togglePill(this,'rif_ruolo')">Resp. tecnico</div><div class="pill" onclick="togglePill(this,'rif_ruolo')">Commerciale</div><div class="pill" onclick="togglePill(this,'rif_ruolo')">Altro</div></div></div>
+        <div class="field"><label id="sf-rif-tipo-lbl">Tipo azienda</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'rif_tipo')">Pubblica (ATO/multiutility)</div><div class="pill" onclick="togglePill(this,'rif_tipo')">Privata</div><div class="pill" onclick="togglePill(this,'rif_tipo')">Mista</div></div></div>
+        <div class="field"><label id="sf-rif-bacino-lbl">Bacino di utenza</label><input type="text" id="sf_rif_bacino" placeholder="es. Provincia di Roma..."></div>
+        <div class="field"><label id="sf-rif-ruolo-lbl">Ruolo in azienda</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'rif_ruolo')">CEO / DG</div><div class="pill" onclick="togglePill(this,'rif_ruolo')">Resp. tecnico</div><div class="pill" onclick="togglePill(this,'rif_ruolo')">Commerciale</div><div class="pill" onclick="togglePill(this,'rif_ruolo')">Altro</div></div></div>
       </div>
 
+      <!-- Sub Ente -->
       <div class="sub-fields" id="sub-ente">
-        <div class="field"><label>Tipo ente</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'ente_tipo')">ARPA</div><div class="pill" onclick="togglePill(this,'ente_tipo')">Legambiente</div><div class="pill" onclick="togglePill(this,'ente_tipo')">WWF</div><div class="pill" onclick="togglePill(this,'ente_tipo')">Ass. categoria</div><div class="pill" onclick="togglePill(this,'ente_tipo')">Altro</div></div></div>
-        <div class="field"><label>Ambito territoriale</label><input type="text" id="sf_ente_territorio" placeholder="es. Lazio, Provincia di Viterbo..."></div>
-        <div class="field"><label>Ruolo nell'ente</label><input type="text" id="sf_ente_ruolo" placeholder="es. Presidente, Responsabile, Ricercatore..."></div>
+        <div class="field"><label id="sf-ente-tipo-lbl">Tipo ente</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'ente_tipo')">ARPA</div><div class="pill" onclick="togglePill(this,'ente_tipo')">Legambiente</div><div class="pill" onclick="togglePill(this,'ente_tipo')">WWF</div><div class="pill" onclick="togglePill(this,'ente_tipo')">Ass. categoria</div><div class="pill" onclick="togglePill(this,'ente_tipo')">Altro</div></div></div>
+        <div class="field"><label id="sf-ente-territorio-lbl">Ambito territoriale</label><input type="text" id="sf_ente_territorio" placeholder="es. Lazio, Provincia di Viterbo..."></div>
+        <div class="field"><label id="sf-ente-ruolo-lbl">Ruolo nell'ente</label><input type="text" id="sf_ente_ruolo" placeholder="es. Presidente, Responsabile..."></div>
       </div>
 
+      <!-- Sub Privato -->
       <div class="sub-fields" id="sub-privato">
-        <div class="field"><label>Settore</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'priv_settore')">Alimentare</div><div class="pill" onclick="togglePill(this,'priv_settore')">GDO</div><div class="pill" onclick="togglePill(this,'priv_settore')">Ristorazione</div><div class="pill" onclick="togglePill(this,'priv_settore')">Industria</div><div class="pill" onclick="togglePill(this,'priv_settore')">Agricoltura</div><div class="pill" onclick="togglePill(this,'priv_settore')">Altro</div></div></div>
-        <div class="field"><label>Volume rifiuti organici</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'priv_volume')">Piccolo (&lt;500 kg/g)</div><div class="pill" onclick="togglePill(this,'priv_volume')">Medio (500–2000 kg/g)</div><div class="pill" onclick="togglePill(this,'priv_volume')">Grande (&gt;2000 kg/g)</div></div></div>
-        <div class="field"><label>Ruolo</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'priv_ruolo')">Titolare</div><div class="pill" onclick="togglePill(this,'priv_ruolo')">Direttore</div><div class="pill" onclick="togglePill(this,'priv_ruolo')">Resp. acquisti</div><div class="pill" onclick="togglePill(this,'priv_ruolo')">Altro</div></div></div>
+        <div class="field"><label id="sf-priv-settore-lbl">Settore</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'priv_settore')">Alimentare</div><div class="pill" onclick="togglePill(this,'priv_settore')">GDO</div><div class="pill" onclick="togglePill(this,'priv_settore')">Ristorazione</div><div class="pill" onclick="togglePill(this,'priv_settore')">Industria</div><div class="pill" onclick="togglePill(this,'priv_settore')">Agricoltura</div><div class="pill" onclick="togglePill(this,'priv_settore')">Altro</div></div></div>
+        <div class="field"><label id="sf-priv-volume-lbl">Volume rifiuti organici</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'priv_volume')">Piccolo (&lt;500 kg/g)</div><div class="pill" onclick="togglePill(this,'priv_volume')">Medio (500–2000 kg/g)</div><div class="pill" onclick="togglePill(this,'priv_volume')">Grande (&gt;2000 kg/g)</div></div></div>
+        <div class="field"><label id="sf-priv-ruolo-lbl">Ruolo</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'priv_ruolo')">Titolare</div><div class="pill" onclick="togglePill(this,'priv_ruolo')">Direttore</div><div class="pill" onclick="togglePill(this,'priv_ruolo')">Resp. acquisti</div><div class="pill" onclick="togglePill(this,'priv_ruolo')">Altro</div></div></div>
       </div>
 
+      <!-- Sub Progettista -->
       <div class="sub-fields" id="sub-progettista">
-        <div class="field"><label>Tipo</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'prog_tipo')">Studio privato</div><div class="pill" onclick="togglePill(this,'prog_tipo')">Società ingegneria</div><div class="pill" onclick="togglePill(this,'prog_tipo')">Pubblica amm.</div></div></div>
-        <div class="field"><label>Specializzazione</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'prog_spec')">Ambientale</div><div class="pill" onclick="togglePill(this,'prog_spec')">Civile</div><div class="pill" onclick="togglePill(this,'prog_spec')">Impiantistico</div><div class="pill" onclick="togglePill(this,'prog_spec')">Architettura</div><div class="pill" onclick="togglePill(this,'prog_spec')">Altro</div></div></div>
-        <div class="field"><label>Opera prevalentemente su</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'prog_ambito')">Bandi pubblici</div><div class="pill" onclick="togglePill(this,'prog_ambito')">Progetti privati</div><div class="pill" onclick="togglePill(this,'prog_ambito')">Entrambi</div></div></div>
+        <div class="field"><label id="sf-prog-tipo-lbl">Tipo</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'prog_tipo')">Studio privato</div><div class="pill" onclick="togglePill(this,'prog_tipo')">Società ingegneria</div><div class="pill" onclick="togglePill(this,'prog_tipo')">Pubblica amm.</div></div></div>
+        <div class="field"><label id="sf-prog-spec-lbl">Specializzazione</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'prog_spec')">Ambientale</div><div class="pill" onclick="togglePill(this,'prog_spec')">Civile</div><div class="pill" onclick="togglePill(this,'prog_spec')">Impiantistico</div><div class="pill" onclick="togglePill(this,'prog_spec')">Architettura</div><div class="pill" onclick="togglePill(this,'prog_spec')">Altro</div></div></div>
+        <div class="field"><label id="sf-prog-ambito-lbl">Opera prevalentemente su</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'prog_ambito')">Bandi pubblici</div><div class="pill" onclick="togglePill(this,'prog_ambito')">Progetti privati</div><div class="pill" onclick="togglePill(this,'prog_ambito')">Entrambi</div></div></div>
       </div>
 
+      <!-- Sub Università -->
       <div class="sub-fields" id="sub-universita">
-        <div class="field"><label>Tipo istituzione</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'uni_tipo')">Università pubblica</div><div class="pill" onclick="togglePill(this,'uni_tipo')">Università privata</div><div class="pill" onclick="togglePill(this,'uni_tipo')">CNR / ENEA</div><div class="pill" onclick="togglePill(this,'uni_tipo')">Centro ricerca privato</div></div></div>
-        <div class="field"><label>Area di ricerca</label><input type="text" id="sf_uni_area" placeholder="es. Ingegneria ambientale, Agraria..."></div>
-        <div class="field"><label>Ruolo</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'uni_ruolo')">Professore</div><div class="pill" onclick="togglePill(this,'uni_ruolo')">Ricercatore</div><div class="pill" onclick="togglePill(this,'uni_ruolo')">Dottorando</div><div class="pill" onclick="togglePill(this,'uni_ruolo')">Studente</div></div></div>
+        <div class="field"><label id="sf-uni-tipo-lbl">Tipo istituzione</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'uni_tipo')">Università pubblica</div><div class="pill" onclick="togglePill(this,'uni_tipo')">Università privata</div><div class="pill" onclick="togglePill(this,'uni_tipo')">CNR / ENEA</div><div class="pill" onclick="togglePill(this,'uni_tipo')">Centro ricerca privato</div></div></div>
+        <div class="field"><label id="sf-uni-area-lbl">Area di ricerca</label><input type="text" id="sf_uni_area" placeholder="es. Ingegneria ambientale..."></div>
+        <div class="field"><label id="sf-uni-ruolo-lbl">Ruolo</label><div class="pill-group"><div class="pill" onclick="togglePill(this,'uni_ruolo')">Professore</div><div class="pill" onclick="togglePill(this,'uni_ruolo')">Ricercatore</div><div class="pill" onclick="togglePill(this,'uni_ruolo')">Dottorando</div><div class="pill" onclick="togglePill(this,'uni_ruolo')">Studente</div></div></div>
       </div>
     </div>
 
+    <!-- Motivo -->
     <div class="form-card">
-      <div class="form-card-header">💡 Motivo della visita</div>
+      <div class="form-card-header">💡 <span id="section-motivo">Motivo della visita</span></div>
       <div class="motivo-section">
         <div>
-          <div class="motivo-label">Come ci hai conosciuto?</div>
+          <div class="motivo-label" id="motivo-source-lbl">Come ci hai conosciuto?</div>
           <div class="pill-group" id="pg_source">
-            <div class="pill" onclick="selectRadio(this,'source')">🔍 Web / ricerca</div>
-            <div class="pill" onclick="selectRadio(this,'source')">📢 Passaparola</div>
-            <div class="pill" onclick="selectRadio(this,'source')">📰 Stampa</div>
-            <div class="pill" onclick="selectRadio(this,'source')">🎪 Fiera / evento</div>
-            <div class="pill" onclick="selectRadio(this,'source')">📧 Contatto diretto</div>
-            <div class="pill" onclick="selectRadio(this,'source')">🏛️ Indicazione istituzionale</div>
+            <div class="pill" onclick="selectRadio(this,'source')" id="pill-web">🔍 Web / ricerca</div>
+            <div class="pill" onclick="selectRadio(this,'source')" id="pill-passaparola">📢 Passaparola</div>
+            <div class="pill" onclick="selectRadio(this,'source')" id="pill-stampa">📰 Stampa</div>
+            <div class="pill" onclick="selectRadio(this,'source')" id="pill-fiera">🎪 Fiera / evento</div>
+            <div class="pill" onclick="selectRadio(this,'source')" id="pill-contatto">📧 Contatto diretto</div>
+            <div class="pill" onclick="selectRadio(this,'source')" id="pill-istituz">🏛️ Indicazione istituzionale</div>
           </div>
         </div>
         <div>
-          <div class="motivo-label">Obiettivo principale <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text3)">(max 2)</span></div>
+          <div class="motivo-label" id="motivo-obj-lbl">Obiettivo principale <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text3)" id="motivo-max-lbl">(max 2)</span></div>
           <div class="pill-group" id="pg_obiettivo">
-            <div class="pill" onclick="togglePillMax(this,'obiettivo',2)">👀 Info / primo contatto</div>
-            <div class="pill" onclick="togglePillMax(this,'obiettivo',2)">📋 Valutazione bando/gara</div>
-            <div class="pill" onclick="togglePillMax(this,'obiettivo',2)">🏗️ Progettazione impianto</div>
-            <div class="pill" onclick="togglePillMax(this,'obiettivo',2)">💰 Budget disponibile</div>
-            <div class="pill" onclick="togglePillMax(this,'obiettivo',2)">🤝 Partnership</div>
-            <div class="pill" onclick="togglePillMax(this,'obiettivo',2)">🎓 Ricerca / studio</div>
-            <div class="pill" onclick="togglePillMax(this,'obiettivo',2)">🔄 Cliente esistente</div>
+            <div class="pill" onclick="togglePillMax(this,'obiettivo',2)" id="pill-info">👀 Info / primo contatto</div>
+            <div class="pill" onclick="togglePillMax(this,'obiettivo',2)" id="pill-bando">📋 Valutazione bando/gara</div>
+            <div class="pill" onclick="togglePillMax(this,'obiettivo',2)" id="pill-prog">🏗️ Progettazione impianto</div>
+            <div class="pill" onclick="togglePillMax(this,'obiettivo',2)" id="pill-budget">💰 Budget disponibile</div>
+            <div class="pill" onclick="togglePillMax(this,'obiettivo',2)" id="pill-partner">🤝 Partnership</div>
+            <div class="pill" onclick="togglePillMax(this,'obiettivo',2)" id="pill-ricerca">🎓 Ricerca / studio</div>
+            <div class="pill" onclick="togglePillMax(this,'obiettivo',2)" id="pill-cliente">🔄 Cliente esistente</div>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- Note -->
     <div class="form-card">
-      <div class="form-card-header">📝 Note</div>
+      <div class="form-card-header">📝 <span id="section-note">Note</span></div>
       <div class="form-body">
-        <textarea id="f_note" placeholder="Annotazioni libere, dettagli discussione, follow-up specifici..."></textarea>
+        <textarea id="f_note" placeholder="Annotazioni libere, dettagli discussione, follow-up..."></textarea>
       </div>
     </div>
 
     <div class="submit-area">
       <button class="btn btn-ghost btn-icon" onclick="clearForm()" title="Cancella">🗑️</button>
-      <button class="btn btn-green" style="flex:1" onclick="saveLead()">✅ Salva contatto</button>
+      <button class="btn btn-green" style="flex:1" onclick="saveLead()" id="btn-save">✅ <span id="btn-save-txt">Salva contatto</span></button>
     </div>
   </div>
 
   <!-- LEADS -->
   <div class="view" id="view-leads">
     <div class="leads-toolbar">
-      <input type="text" id="searchInput" placeholder="🔍 Cerca nome, ente, città..." oninput="renderLeads()">
-      <button class="btn btn-outline btn-sm" onclick="exportCSV()">⬇️ CSV</button>
+      <input type="text" id="searchInput" oninput="renderLeads()">
+      <button class="btn btn-outline btn-sm" onclick="exportCSV()" id="btn-csv">⬇️ CSV</button>
     </div>
     <div id="leadsList"></div>
   </div>
@@ -558,7 +495,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
     <h3 id="modalTitle"></h3>
     <p id="modalMsg"></p>
     <div class="modal-btns">
-      <button class="btn btn-outline" style="flex:1" onclick="closeModal()">Annulla</button>
+      <button class="btn btn-outline" style="flex:1" onclick="closeModal()" id="modal-cancel-btn">Annulla</button>
       <button class="btn btn-danger-outline" style="flex:1" id="modalConfirmBtn">Conferma</button>
     </div>
   </div>
@@ -566,15 +503,15 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
 
 <div class="modal-bg" id="leadsPinBg">
   <div class="modal">
-    <h3>🔒 Accesso lead</h3>
-    <p>Inserisci il PIN per visualizzare i contatti raccolti.</p>
+    <h3 id="leads-pin-title">🔒 Accesso lead</h3>
+    <p id="leads-pin-sub">Inserisci il PIN per visualizzare i contatti raccolti.</p>
     <div class="setup-field" style="margin-bottom:0">
-      <input type="password" id="leadsPinInput" placeholder="PIN leads" maxlength="4" inputmode="numeric" autocomplete="off">
+      <input type="password" id="leadsPinInput" maxlength="4" inputmode="numeric" autocomplete="off">
     </div>
     <div style="height:16px"></div>
     <div class="modal-btns">
-      <button class="btn btn-outline" style="flex:1" onclick="closeLeadsPin()">Annulla</button>
-      <button class="btn btn-green" style="flex:1" onclick="verifyLeadsPin()">Accedi</button>
+      <button class="btn btn-outline" style="flex:1" onclick="closeLeadsPin()" id="leads-pin-cancel">Annulla</button>
+      <button class="btn btn-green" style="flex:1" onclick="verifyLeadsPin()" id="leads-pin-ok">Accedi</button>
     </div>
   </div>
 </div>
@@ -588,315 +525,669 @@ let pinBuffer = '';
 let pillState = {};
 let pendingDeleteId = null;
 let editingId = null;
+let currentLang = localStorage.getItem('kc_lang') || 'it';
 
 const STAFF_PIN_KEY = 'kc_staff_pin';
 const LEADS_PIN_KEY = 'kc_leads_pin';
 
-const CAT_LABELS = {
-  pa: '🏛️ Pubblica Amministrazione',
-  rifiuti: '♻️ Gestione rifiuti',
-  ente: '🌿 Ente / Ass. ambientale',
-  privato: '🏭 Azienda privata',
-  progettista: '📐 Progettista / Ing.',
-  universita: '🎓 Università / Ricerca'
+// ── TRANSLATIONS ──
+const T = {
+  it: {
+    lockLabel:'Inserisci PIN staff', lockError:'PIN errato. Riprova.',
+    setupLink:'⚙️ Configurazione iniziale',
+    setupTitle:'Configurazione', setupSub:'Imposta il PIN staff e il PIN leads.',
+    setupNote:'🔒 La API key è salvata su Netlify. Non transita nel browser.',
+    setupPinLbl:'PIN staff (4 cifre) — per aprire l\'app',
+    setupLeadsLbl:'PIN leads (4 cifre) — per vedere i contatti',
+    setupSave:'Salva configurazione', setupCancel:'← Annulla',
+    headerSub:'Fiera · Contatti', btnNew:'+ Nuovo',
+    tabScan:'Scansiona', tabForm:'Modulo', tabLeads:'Lead',
+    scanTitle:'Scansione biglietto da visita',
+    scanIdle:'Avvia la fotocamera e inquadra il biglietto da visita',
+    btnCamera:'Avvia fotocamera', btnStop:'⏹ Ferma',
+    uploadTxt:'Carica foto del biglietto',
+    btnManual:'Compila manualmente',
+    statusScanning:'🔍 Lettura biglietto in corso...',
+    statusOk:'✅ Biglietto letto — verifica i campi evidenziati in verde',
+    statusErr:'❌ Errore lettura: ',
+    sectionAnagrafica:'Anagrafica visitatore',
+    lblNome:'Nome', lblCognome:'Cognome', lblRuolo:'Ruolo / Qualifica',
+    lblCell:'Cellulare', lblEmail:'Email',
+    sectionEnte:'Ente o Società',
+    lblOrg:'Nome ente / società', lblCap:'CAP', lblCitta:'Città',
+    lblProvincia:'Provincia', lblRegione:'Regione', lblRegioneOpt:'(opzionale)',
+    lblTel:'Telefono', lblEmailOrg:'Email ufficio',
+    sectionCategoria:'Categoria visitatore',
+    catPA:'Pubblica Amministrazione', catRifiuti:'Azienda gestione rifiuti',
+    catEnte:'Ente locale / Ass. ambientale', catPrivato:'Azienda privata / Industriale',
+    catProg:'Progettista / Ing. / Arch.', catUni:'Università / Ente di ricerca',
+    sfPaLivello:'Livello ente', sfPaTerritorio:'Nome Comune / Ente',
+    sfPaProvincia:'Provincia', sfPaRegione:'Regione',
+    sfPaRuolo:'Ruolo istituzionale', sfPaDelega:'Delega / competenza',
+    sfRifTipo:'Tipo azienda', sfRifBacino:'Bacino di utenza', sfRifRuolo:'Ruolo in azienda',
+    sfEnteTipo:'Tipo ente', sfEnteTerritorio:'Ambito territoriale', sfEnteRuolo:'Ruolo nell\'ente',
+    sfPrivSettore:'Settore', sfPrivVolume:'Volume rifiuti organici', sfPrivRuolo:'Ruolo',
+    sfProgTipo:'Tipo', sfProgSpec:'Specializzazione', sfProgAmbito:'Opera prevalentemente su',
+    sfUniTipo:'Tipo istituzione', sfUniArea:'Area di ricerca', sfUniRuolo:'Ruolo',
+    sectionMotivo:'Motivo della visita',
+    motivoSource:'Come ci hai conosciuto?',
+    motivoObj:'Obiettivo principale', motivoMax:'(max 2)',
+    pillWeb:'🔍 Web / ricerca', pillPassaparola:'📢 Passaparola',
+    pillStampa:'📰 Stampa', pillFiera:'🎪 Fiera / evento',
+    pillContatto:'📧 Contatto diretto', pillIstituz:'🏛️ Indicazione istituzionale',
+    pillInfo:'👀 Info / primo contatto', pillBando:'📋 Valutazione bando/gara',
+    pillProg:'🏗️ Progettazione impianto', pillBudget:'💰 Budget disponibile',
+    pillPartner:'🤝 Partnership', pillRicerca:'🎓 Ricerca / studio', pillCliente:'🔄 Cliente esistente',
+    sectionNote:'Note', notePlaceholder:'Annotazioni libere, dettagli discussione, follow-up...',
+    btnSave:'Salva contatto', searchPlaceholder:'🔍 Cerca nome, ente, città...',
+    emptyTitle:'Nessun contatto ancora',
+    emptyBody:'Scansiona un biglietto da visita o compila il modulo per aggiungere il primo lead.',
+    editBtn:'✏️ Modifica', deleteBtn:'🗑️',
+    modalDeleteTitle:'Elimina contatto', modalDeleteMsg:'Eliminare {name}? L\'operazione non è reversibile.',
+    modalCancel:'Annulla', modalConfirm:'Conferma',
+    leadsPinTitle:'🔒 Accesso lead', leadsPinSub:'Inserisci il PIN per visualizzare i contatti.',
+    leadsPinCancel:'Annulla', leadsPinOk:'Accedi',
+    toastSaved:'✅ Contatto salvato!', toastDeleted:'🗑️ Contatto eliminato',
+    toastEditing:'✏️ Modifica contatto', toastPinErr:'⚠️ PIN errato',
+    toastMaxPills:'⚠️ Massimo {n} scelte', toastNoLeads:'Nessun contatto da esportare',
+    toastExported:'📥 Esportati {n} contatti', toastSetupSaved:'✅ Configurazione salvata',
+    toastPinFormat:'⚠️ PIN: 4 cifre numeriche',
+    csvHeaders:['Data','Nome','Cognome','Ruolo','Cellulare','Email','Organizzazione','CAP','Città','Provincia','Regione','Telefono','Email org','Categoria','Dettagli categoria','Come conosciuto','Obiettivo','Note'],
+    catLabels:{pa:'🏛️ Pubblica Amministrazione',rifiuti:'♻️ Gestione rifiuti',ente:'🌿 Ente / Ass. ambientale',privato:'🏭 Azienda privata',progettista:'📐 Progettista / Ing.',universita:'🎓 Università / Ricerca'},
+    hotLabel:'🔥 Alta priorità',
+  },
+  en: {
+    lockLabel:'Enter staff PIN', lockError:'Wrong PIN. Try again.',
+    setupLink:'⚙️ Initial setup',
+    setupTitle:'Setup', setupSub:'Set the staff PIN and the leads PIN.',
+    setupNote:'🔒 The API key is stored on Netlify. It never passes through the browser.',
+    setupPinLbl:'Staff PIN (4 digits) — to open the app',
+    setupLeadsLbl:'Leads PIN (4 digits) — to view contacts',
+    setupSave:'Save configuration', setupCancel:'← Cancel',
+    headerSub:'Trade Show · Contacts', btnNew:'+ New',
+    tabScan:'Scan', tabForm:'Form', tabLeads:'Leads',
+    scanTitle:'Business card scan',
+    scanIdle:'Start the camera and point it at the business card',
+    btnCamera:'Start camera', btnStop:'⏹ Stop',
+    uploadTxt:'Upload card photo',
+    btnManual:'Fill in manually',
+    statusScanning:'🔍 Reading card...',
+    statusOk:'✅ Card read — please verify the highlighted fields',
+    statusErr:'❌ Read error: ',
+    sectionAnagrafica:'Visitor details',
+    lblNome:'First name', lblCognome:'Last name', lblRuolo:'Role / Title',
+    lblCell:'Mobile', lblEmail:'Email',
+    sectionEnte:'Organization / Company',
+    lblOrg:'Organization name', lblCap:'Postal code', lblCitta:'City',
+    lblProvincia:'Province', lblRegione:'Region', lblRegioneOpt:'(optional)',
+    lblTel:'Phone', lblEmailOrg:'Office email',
+    sectionCategoria:'Visitor category',
+    catPA:'Public Administration', catRifiuti:'Waste management company',
+    catEnte:'Local authority / Env. association', catPrivato:'Private / Industrial company',
+    catProg:'Designer / Engineer / Architect', catUni:'University / Research',
+    sfPaLivello:'Authority level', sfPaTerritorio:'Municipality / Authority name',
+    sfPaProvincia:'Province', sfPaRegione:'Region',
+    sfPaRuolo:'Institutional role', sfPaDelega:'Delegation / responsibility',
+    sfRifTipo:'Company type', sfRifBacino:'Service area', sfRifRuolo:'Role in company',
+    sfEnteTipo:'Entity type', sfEnteTerritorio:'Territory', sfEnteRuolo:'Role in entity',
+    sfPrivSettore:'Sector', sfPrivVolume:'Organic waste volume', sfPrivRuolo:'Role',
+    sfProgTipo:'Type', sfProgSpec:'Specialization', sfProgAmbito:'Works mainly on',
+    sfUniTipo:'Institution type', sfUniArea:'Research area', sfUniRuolo:'Role',
+    sectionMotivo:'Purpose of visit',
+    motivoSource:'How did you find us?',
+    motivoObj:'Main objective', motivoMax:'(max 2)',
+    pillWeb:'🔍 Web / search', pillPassaparola:'📢 Word of mouth',
+    pillStampa:'📰 Press', pillFiera:'🎪 Trade show / event',
+    pillContatto:'📧 Direct contact', pillIstituz:'🏛️ Institutional referral',
+    pillInfo:'👀 Info / first contact', pillBando:'📋 Tender evaluation',
+    pillProg:'🏗️ Plant design', pillBudget:'💰 Budget available',
+    pillPartner:'🤝 Partnership', pillRicerca:'🎓 Research / study', pillCliente:'🔄 Existing client',
+    sectionNote:'Notes', notePlaceholder:'Free notes, discussion details, follow-up...',
+    btnSave:'Save contact', searchPlaceholder:'🔍 Search name, org, city...',
+    emptyTitle:'No contacts yet',
+    emptyBody:'Scan a business card or fill in the form to add your first lead.',
+    editBtn:'✏️ Edit', deleteBtn:'🗑️',
+    modalDeleteTitle:'Delete contact', modalDeleteMsg:'Delete {name}? This cannot be undone.',
+    modalCancel:'Cancel', modalConfirm:'Confirm',
+    leadsPinTitle:'🔒 Leads access', leadsPinSub:'Enter the PIN to view saved contacts.',
+    leadsPinCancel:'Cancel', leadsPinOk:'Access',
+    toastSaved:'✅ Contact saved!', toastDeleted:'🗑️ Contact deleted',
+    toastEditing:'✏️ Editing contact', toastPinErr:'⚠️ Wrong PIN',
+    toastMaxPills:'⚠️ Max {n} choices', toastNoLeads:'No contacts to export',
+    toastExported:'📥 Exported {n} contacts', toastSetupSaved:'✅ Configuration saved',
+    toastPinFormat:'⚠️ PIN: 4 numeric digits',
+    csvHeaders:['Date','First name','Last name','Role','Mobile','Email','Organization','Postal code','City','Province','Region','Phone','Office email','Category','Category details','How found','Objective','Notes'],
+    catLabels:{pa:'🏛️ Public Administration',rifiuti:'♻️ Waste management',ente:'🌿 Local auth. / Env. assoc.',privato:'🏭 Private company',progettista:'📐 Designer / Eng.',universita:'🎓 University / Research'},
+    hotLabel:'🔥 High priority',
+  },
+  es: {
+    lockLabel:'Introduce el PIN del personal', lockError:'PIN incorrecto. Inténtalo de nuevo.',
+    setupLink:'⚙️ Configuración inicial',
+    setupTitle:'Configuración', setupSub:'Establece el PIN del personal y el PIN de contactos.',
+    setupNote:'🔒 La clave API está almacenada en Netlify. No pasa por el navegador.',
+    setupPinLbl:'PIN personal (4 dígitos) — para abrir la app',
+    setupLeadsLbl:'PIN contactos (4 dígitos) — para ver los contactos',
+    setupSave:'Guardar configuración', setupCancel:'← Cancelar',
+    headerSub:'Feria · Contactos', btnNew:'+ Nuevo',
+    tabScan:'Escanear', tabForm:'Formulario', tabLeads:'Contactos',
+    scanTitle:'Escaneo de tarjeta de visita',
+    scanIdle:'Inicia la cámara y apunta a la tarjeta de visita',
+    btnCamera:'Iniciar cámara', btnStop:'⏹ Parar',
+    uploadTxt:'Cargar foto de la tarjeta',
+    btnManual:'Rellenar manualmente',
+    statusScanning:'🔍 Leyendo tarjeta...',
+    statusOk:'✅ Tarjeta leída — verifica los campos resaltados',
+    statusErr:'❌ Error de lectura: ',
+    sectionAnagrafica:'Datos del visitante',
+    lblNome:'Nombre', lblCognome:'Apellido', lblRuolo:'Cargo / Título',
+    lblCell:'Móvil', lblEmail:'Email',
+    sectionEnte:'Organización / Empresa',
+    lblOrg:'Nombre de la organización', lblCap:'Código postal', lblCitta:'Ciudad',
+    lblProvincia:'Provincia', lblRegione:'Región/CCAA', lblRegioneOpt:'(opcional)',
+    lblTel:'Teléfono', lblEmailOrg:'Email corporativo',
+    sectionCategoria:'Categoría del visitante',
+    catPA:'Administración Pública', catRifiuti:'Empresa de gestión de residuos',
+    catEnte:'Ente local / Asoc. ambiental', catPrivato:'Empresa privada / Industrial',
+    catProg:'Proyectista / Ing. / Arq.', catUni:'Universidad / Investigación',
+    sfPaLivello:'Nivel del organismo', sfPaTerritorio:'Nombre del municipio / organismo',
+    sfPaProvincia:'Provincia', sfPaRegione:'Región/CCAA',
+    sfPaRuolo:'Cargo institucional', sfPaDelega:'Delegación / competencia',
+    sfRifTipo:'Tipo de empresa', sfRifBacino:'Área de servicio', sfRifRuolo:'Cargo en la empresa',
+    sfEnteTipo:'Tipo de ente', sfEnteTerritorio:'Ámbito territorial', sfEnteRuolo:'Cargo en el ente',
+    sfPrivSettore:'Sector', sfPrivVolume:'Volumen de residuos orgánicos', sfPrivRuolo:'Cargo',
+    sfProgTipo:'Tipo', sfProgSpec:'Especialización', sfProgAmbito:'Trabaja principalmente en',
+    sfUniTipo:'Tipo de institución', sfUniArea:'Área de investigación', sfUniRuolo:'Cargo',
+    sectionMotivo:'Motivo de la visita',
+    motivoSource:'¿Cómo nos conociste?',
+    motivoObj:'Objetivo principal', motivoMax:'(máx 2)',
+    pillWeb:'🔍 Web / búsqueda', pillPassaparola:'📢 Boca a boca',
+    pillStampa:'📰 Prensa', pillFiera:'🎪 Feria / evento',
+    pillContatto:'📧 Contacto directo', pillIstituz:'🏛️ Derivación institucional',
+    pillInfo:'👀 Info / primer contacto', pillBando:'📋 Evaluación de licitación',
+    pillProg:'🏗️ Diseño de instalación', pillBudget:'💰 Presupuesto disponible',
+    pillPartner:'🤝 Colaboración', pillRicerca:'🎓 Investigación / estudio', pillCliente:'🔄 Cliente existente',
+    sectionNote:'Notas', notePlaceholder:'Notas libres, detalles de la conversación...',
+    btnSave:'Guardar contacto', searchPlaceholder:'🔍 Buscar nombre, org, ciudad...',
+    emptyTitle:'Sin contactos aún',
+    emptyBody:'Escanea una tarjeta de visita o rellena el formulario para añadir tu primer contacto.',
+    editBtn:'✏️ Editar', deleteBtn:'🗑️',
+    modalDeleteTitle:'Eliminar contacto', modalDeleteMsg:'¿Eliminar {name}? Esta acción no se puede deshacer.',
+    modalCancel:'Cancelar', modalConfirm:'Confirmar',
+    leadsPinTitle:'🔒 Acceso a contactos', leadsPinSub:'Introduce el PIN para ver los contactos guardados.',
+    leadsPinCancel:'Cancelar', leadsPinOk:'Acceder',
+    toastSaved:'✅ ¡Contacto guardado!', toastDeleted:'🗑️ Contacto eliminado',
+    toastEditing:'✏️ Editando contacto', toastPinErr:'⚠️ PIN incorrecto',
+    toastMaxPills:'⚠️ Máximo {n} opciones', toastNoLeads:'No hay contactos para exportar',
+    toastExported:'📥 Exportados {n} contactos', toastSetupSaved:'✅ Configuración guardada',
+    toastPinFormat:'⚠️ PIN: 4 dígitos numéricos',
+    csvHeaders:['Fecha','Nombre','Apellido','Cargo','Móvil','Email','Organización','Código postal','Ciudad','Provincia','Región','Teléfono','Email corporativo','Categoría','Detalles categoría','Cómo conoció','Objetivo','Notas'],
+    catLabels:{pa:'🏛️ Administración Pública',rifiuti:'♻️ Gestión residuos',ente:'🌿 Ente local / Asoc.',privato:'🏭 Empresa privada',progettista:'📐 Proyectista / Ing.',universita:'🎓 Universidad / Inv.'},
+    hotLabel:'🔥 Alta prioridad',
+  },
+  fr: {
+    lockLabel:'Entrez le PIN du personnel', lockError:'PIN incorrect. Réessayez.',
+    setupLink:'⚙️ Configuration initiale',
+    setupTitle:'Configuration', setupSub:'Définissez le PIN du personnel et le PIN des contacts.',
+    setupNote:'🔒 La clé API est stockée sur Netlify. Elle ne passe pas par le navigateur.',
+    setupPinLbl:'PIN personnel (4 chiffres) — pour ouvrir l\'app',
+    setupLeadsLbl:'PIN contacts (4 chiffres) — pour voir les contacts',
+    setupSave:'Enregistrer la configuration', setupCancel:'← Annuler',
+    headerSub:'Salon · Contacts', btnNew:'+ Nouveau',
+    tabScan:'Scanner', tabForm:'Formulaire', tabLeads:'Contacts',
+    scanTitle:'Scan de carte de visite',
+    scanIdle:'Démarrez la caméra et pointez-la vers la carte de visite',
+    btnCamera:'Démarrer la caméra', btnStop:'⏹ Arrêter',
+    uploadTxt:'Charger une photo de la carte',
+    btnManual:'Remplir manuellement',
+    statusScanning:'🔍 Lecture de la carte...',
+    statusOk:'✅ Carte lue — vérifiez les champs surlignés',
+    statusErr:'❌ Erreur de lecture : ',
+    sectionAnagrafica:'Données du visiteur',
+    lblNome:'Prénom', lblCognome:'Nom', lblRuolo:'Poste / Titre',
+    lblCell:'Mobile', lblEmail:'Email',
+    sectionEnte:'Organisation / Entreprise',
+    lblOrg:'Nom de l\'organisation', lblCap:'Code postal', lblCitta:'Ville',
+    lblProvincia:'Province', lblRegione:'Région', lblRegioneOpt:'(optionnel)',
+    lblTel:'Téléphone', lblEmailOrg:'Email professionnel',
+    sectionCategoria:'Catégorie du visiteur',
+    catPA:'Administration publique', catRifiuti:'Entreprise de gestion des déchets',
+    catEnte:'Collectivité / Assoc. environnementale', catPrivato:'Entreprise privée / Industrielle',
+    catProg:'Concepteur / Ing. / Arch.', catUni:'Université / Recherche',
+    sfPaLivello:'Niveau de l\'autorité', sfPaTerritorio:'Nom de la commune / autorité',
+    sfPaProvincia:'Province', sfPaRegione:'Région',
+    sfPaRuolo:'Rôle institutionnel', sfPaDelega:'Délégation / compétence',
+    sfRifTipo:'Type d\'entreprise', sfRifBacino:'Zone de service', sfRifRuolo:'Rôle dans l\'entreprise',
+    sfEnteTipo:'Type d\'entité', sfEnteTerritorio:'Territoire', sfEnteRuolo:'Rôle dans l\'entité',
+    sfPrivSettore:'Secteur', sfPrivVolume:'Volume de déchets organiques', sfPrivRuolo:'Rôle',
+    sfProgTipo:'Type', sfProgSpec:'Spécialisation', sfProgAmbito:'Travaille principalement sur',
+    sfUniTipo:'Type d\'institution', sfUniArea:'Domaine de recherche', sfUniRuolo:'Rôle',
+    sectionMotivo:'Objet de la visite',
+    motivoSource:'Comment nous avez-vous connus ?',
+    motivoObj:'Objectif principal', motivoMax:'(max 2)',
+    pillWeb:'🔍 Web / recherche', pillPassaparola:'📢 Bouche à oreille',
+    pillStampa:'📰 Presse', pillFiera:'🎪 Salon / événement',
+    pillContatto:'📧 Contact direct', pillIstituz:'🏛️ Référencement institutionnel',
+    pillInfo:'👀 Info / premier contact', pillBando:'📋 Évaluation d\'appel d\'offres',
+    pillProg:'🏗️ Conception d\'installation', pillBudget:'💰 Budget disponible',
+    pillPartner:'🤝 Partenariat', pillRicerca:'🎓 Recherche / étude', pillCliente:'🔄 Client existant',
+    sectionNote:'Notes', notePlaceholder:'Notes libres, détails de la discussion...',
+    btnSave:'Enregistrer le contact', searchPlaceholder:'🔍 Rechercher nom, org, ville...',
+    emptyTitle:'Aucun contact pour l\'instant',
+    emptyBody:'Scannez une carte de visite ou remplissez le formulaire pour ajouter votre premier contact.',
+    editBtn:'✏️ Modifier', deleteBtn:'🗑️',
+    modalDeleteTitle:'Supprimer le contact', modalDeleteMsg:'Supprimer {name} ? Cette action est irréversible.',
+    modalCancel:'Annuler', modalConfirm:'Confirmer',
+    leadsPinTitle:'🔒 Accès contacts', leadsPinSub:'Entrez le PIN pour voir les contacts enregistrés.',
+    leadsPinCancel:'Annuler', leadsPinOk:'Accéder',
+    toastSaved:'✅ Contact enregistré !', toastDeleted:'🗑️ Contact supprimé',
+    toastEditing:'✏️ Modification du contact', toastPinErr:'⚠️ PIN incorrect',
+    toastMaxPills:'⚠️ Maximum {n} choix', toastNoLeads:'Aucun contact à exporter',
+    toastExported:'📥 {n} contacts exportés', toastSetupSaved:'✅ Configuration enregistrée',
+    toastPinFormat:'⚠️ PIN : 4 chiffres',
+    csvHeaders:['Date','Prénom','Nom','Poste','Mobile','Email','Organisation','Code postal','Ville','Province','Région','Téléphone','Email professionnel','Catégorie','Détails catégorie','Comment connu','Objectif','Notes'],
+    catLabels:{pa:'🏛️ Administration publique',rifiuti:'♻️ Gestion des déchets',ente:'🌿 Collectivité / Assoc.',privato:'🏭 Entreprise privée',progettista:'📐 Concepteur / Ing.',universita:'🎓 Université / Recherche'},
+    hotLabel:'🔥 Haute priorité',
+  }
 };
 
-// ── SCREENS ──
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+// ── LANG ──
+function t(key, vars) {
+  let str = T[currentLang]?.[key] || T.it[key] || key;
+  if (vars) Object.entries(vars).forEach(([k,v]) => str = str.replace('{'+k+'}', v));
+  return str;
 }
-function showLock() { pinBuffer = ''; updateDots(); showScreen('screen-lock'); }
+
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('kc_lang', lang);
+  // Update lang buttons
+  document.querySelectorAll('.lang-btn,.app-lang-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent === lang.toUpperCase());
+  });
+  applyLang();
+}
+
+function applyLang() {
+  const L = currentLang;
+  // Lock screen
+  document.getElementById('lock-label').textContent = t('lockLabel');
+  document.getElementById('setup-link-btn').textContent = t('setupLink');
+  // Setup
+  document.getElementById('setup-title-txt').textContent = t('setupTitle');
+  document.getElementById('setup-sub-txt').textContent = t('setupSub');
+  document.getElementById('setup-note-txt').textContent = t('setupNote');
+  document.getElementById('setup-pin-lbl').textContent = t('setupPinLbl');
+  document.getElementById('setup-leads-lbl').textContent = t('setupLeadsLbl');
+  document.getElementById('setup-save-btn').textContent = t('setupSave');
+  document.getElementById('setup-cancel-btn').textContent = t('setupCancel');
+  // Header
+  document.getElementById('header-sub').textContent = t('headerSub');
+  document.getElementById('btn-new').textContent = t('btnNew');
+  // Tabs
+  document.getElementById('tab-scan-lbl').textContent = t('tabScan');
+  document.getElementById('tab-form-lbl').textContent = t('tabForm');
+  document.getElementById('tab-leads-lbl').textContent = t('tabLeads');
+  // Scan
+  document.getElementById('scan-title').textContent = t('scanTitle');
+  document.getElementById('scan-idle-txt').textContent = t('scanIdle');
+  document.getElementById('upload-txt').textContent = t('uploadTxt');
+  document.getElementById('btn-manual-txt').textContent = t('btnManual');
+  // Form sections
+  document.getElementById('section-anagrafica').textContent = t('sectionAnagrafica');
+  document.getElementById('lbl-nome').textContent = t('lblNome');
+  document.getElementById('lbl-cognome').textContent = t('lblCognome');
+  document.getElementById('lbl-ruolo').textContent = t('lblRuolo');
+  document.getElementById('lbl-cell').textContent = t('lblCell');
+  document.getElementById('lbl-email').textContent = t('lblEmail');
+  document.getElementById('section-ente').textContent = t('sectionEnte');
+  document.getElementById('lbl-org').textContent = t('lblOrg');
+  document.getElementById('lbl-cap').textContent = t('lblCap');
+  document.getElementById('lbl-citta').textContent = t('lblCitta');
+  document.getElementById('lbl-provincia').textContent = t('lblProvincia');
+  document.getElementById('lbl-regione').textContent = t('lblRegione') + ' ';
+  // Categories
+  document.getElementById('section-categoria').textContent = t('sectionCategoria');
+  document.getElementById('cat-lbl-pa').textContent = t('catPA');
+  document.getElementById('cat-lbl-rifiuti').textContent = t('catRifiuti');
+  document.getElementById('cat-lbl-ente').textContent = t('catEnte');
+  document.getElementById('cat-lbl-privato').textContent = t('catPrivato');
+  document.getElementById('cat-lbl-progettista').textContent = t('catProg');
+  document.getElementById('cat-lbl-universita').textContent = t('catUni');
+  // Sub-fields labels
+  document.getElementById('sf-pa-livello-lbl').textContent = t('sfPaLivello');
+  document.getElementById('sf-pa-territorio-lbl').textContent = t('sfPaTerritorio');
+  document.getElementById('sf-pa-provincia-lbl').textContent = t('sfPaProvincia');
+  document.getElementById('sf-pa-regione-lbl').textContent = t('sfPaRegione');
+  document.getElementById('sf-pa-ruolo-lbl').textContent = t('sfPaRuolo');
+  document.getElementById('sf-pa-delega-lbl').textContent = t('sfPaDelega');
+  document.getElementById('sf-rif-tipo-lbl').textContent = t('sfRifTipo');
+  document.getElementById('sf-rif-bacino-lbl').textContent = t('sfRifBacino');
+  document.getElementById('sf-rif-ruolo-lbl').textContent = t('sfRifRuolo');
+  document.getElementById('sf-ente-tipo-lbl').textContent = t('sfEnteTipo');
+  document.getElementById('sf-ente-territorio-lbl').textContent = t('sfEnteTerritorio');
+  document.getElementById('sf-ente-ruolo-lbl').textContent = t('sfEnteRuolo');
+  document.getElementById('sf-priv-settore-lbl').textContent = t('sfPrivSettore');
+  document.getElementById('sf-priv-volume-lbl').textContent = t('sfPrivVolume');
+  document.getElementById('sf-priv-ruolo-lbl').textContent = t('sfPrivRuolo');
+  document.getElementById('sf-prog-tipo-lbl').textContent = t('sfProgTipo');
+  document.getElementById('sf-prog-spec-lbl').textContent = t('sfProgSpec');
+  document.getElementById('sf-prog-ambito-lbl').textContent = t('sfProgAmbito');
+  document.getElementById('sf-uni-tipo-lbl').textContent = t('sfUniTipo');
+  document.getElementById('sf-uni-area-lbl').textContent = t('sfUniArea');
+  document.getElementById('sf-uni-ruolo-lbl').textContent = t('sfUniRuolo');
+  // Motivo
+  document.getElementById('section-motivo').textContent = t('sectionMotivo');
+  document.getElementById('motivo-source-lbl').textContent = t('motivoSource');
+  document.getElementById('motivo-obj-lbl').textContent = t('motivoObj');
+  document.getElementById('motivo-max-lbl').textContent = t('motivoMax');
+  document.getElementById('pill-web').textContent = t('pillWeb');
+  document.getElementById('pill-passaparola').textContent = t('pillPassaparola');
+  document.getElementById('pill-stampa').textContent = t('pillStampa');
+  document.getElementById('pill-fiera').textContent = t('pillFiera');
+  document.getElementById('pill-contatto').textContent = t('pillContatto');
+  document.getElementById('pill-istituz').textContent = t('pillIstituz');
+  document.getElementById('pill-info').textContent = t('pillInfo');
+  document.getElementById('pill-bando').textContent = t('pillBando');
+  document.getElementById('pill-prog').textContent = t('pillProg');
+  document.getElementById('pill-budget').textContent = t('pillBudget');
+  document.getElementById('pill-partner').textContent = t('pillPartner');
+  document.getElementById('pill-ricerca').textContent = t('pillRicerca');
+  document.getElementById('pill-cliente').textContent = t('pillCliente');
+  // Note, save, search
+  document.getElementById('section-note').textContent = t('sectionNote');
+  document.getElementById('f_note').placeholder = t('notePlaceholder');
+  document.getElementById('btn-save-txt').textContent = t('btnSave');
+  document.getElementById('searchInput').placeholder = t('searchPlaceholder');
+  // Modals
+  document.getElementById('modal-cancel-btn').textContent = t('modalCancel');
+  document.getElementById('leads-pin-title').textContent = t('leadsPinTitle');
+  document.getElementById('leads-pin-sub').textContent = t('leadsPinSub');
+  document.getElementById('leads-pin-cancel').textContent = t('leadsPinCancel');
+  document.getElementById('leads-pin-ok').textContent = t('leadsPinOk');
+  // Re-render leads if visible
+  if (document.getElementById('view-leads').classList.contains('active')) renderLeads();
+}
+
+// ── SCREENS ──
+function showScreen(id) { document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+function showLock() { pinBuffer=''; updateDots(); showScreen('screen-lock'); }
 function showSetup() { showScreen('screen-setup'); }
 function lockApp() { showLock(); }
 function showApp() { showScreen('screen-app'); showView('scan'); }
 
 // ── PIN ──
 function pinPress(d) {
-  if (pinBuffer.length >= 4) return;
-  pinBuffer += d; updateDots();
-  if (pinBuffer.length === 4) setTimeout(verifyPin, 120);
+  if(pinBuffer.length>=4) return;
+  pinBuffer+=d; updateDots();
+  if(pinBuffer.length===4) setTimeout(verifyPin,120);
 }
-function pinDel() { pinBuffer = pinBuffer.slice(0,-1); updateDots(); }
-function updateDots() {
-  for (let i=0;i<4;i++) document.getElementById('d'+i).classList.toggle('filled', i < pinBuffer.length);
-}
+function pinDel() { pinBuffer=pinBuffer.slice(0,-1); updateDots(); }
+function updateDots() { for(let i=0;i<4;i++) document.getElementById('d'+i).classList.toggle('filled',i<pinBuffer.length); }
 function verifyPin() {
-  const stored = localStorage.getItem(STAFF_PIN_KEY) || '1234';
-  if (pinBuffer === stored) {
-    document.getElementById('lockError').textContent = '';
-    showApp();
-  } else {
-    document.getElementById('lockError').textContent = 'PIN errato. Riprova.';
-    pinBuffer = ''; updateDots();
-  }
+  const stored=localStorage.getItem(STAFF_PIN_KEY)||'1234';
+  if(pinBuffer===stored) { document.getElementById('lockError').textContent=''; showApp(); }
+  else { document.getElementById('lockError').textContent=t('lockError'); pinBuffer=''; updateDots(); }
 }
 
 // ── SETUP ──
 function saveSetup() {
-  const pin = document.getElementById('setupPin').value.trim();
-  const leadsPin = document.getElementById('setupLeadsPin').value.trim();
-  if (pin.length !== 4 || !/^\d{4}$/.test(pin)) { showToast('⚠️ PIN staff: 4 cifre numeriche'); return; }
-  if (leadsPin.length !== 4 || !/^\d{4}$/.test(leadsPin)) { showToast('⚠️ PIN leads: 4 cifre numeriche'); return; }
-  localStorage.setItem(STAFF_PIN_KEY, pin);
-  localStorage.setItem(LEADS_PIN_KEY, leadsPin);
-  showToast('✅ Configurazione salvata');
+  const pin=document.getElementById('setupPin').value.trim();
+  const leadsPin=document.getElementById('setupLeadsPin').value.trim();
+  if(pin.length!==4||!/^\d{4}$/.test(pin)){showToast(t('toastPinFormat'));return;}
+  if(leadsPin.length!==4||!/^\d{4}$/.test(leadsPin)){showToast(t('toastPinFormat'));return;}
+  localStorage.setItem(STAFF_PIN_KEY,pin);
+  localStorage.setItem(LEADS_PIN_KEY,leadsPin);
+  showToast(t('toastSetupSaved'));
   showLock();
 }
 
 // ── VIEWS ──
 function showView(name) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('view-'+name).classList.add('active');
   document.getElementById('tab-'+name).classList.add('active');
-  if (name === 'leads') renderLeads();
+  if(name==='leads') renderLeads();
 }
-function checkLeadsPin() {
-  document.getElementById('leadsPinInput').value = '';
-  document.getElementById('leadsPinBg').classList.add('show');
-  setTimeout(() => document.getElementById('leadsPinInput').focus(), 100);
-}
+function checkLeadsPin() { document.getElementById('leadsPinInput').value=''; document.getElementById('leadsPinBg').classList.add('show'); setTimeout(()=>document.getElementById('leadsPinInput').focus(),100); }
 function verifyLeadsPin() {
-  const stored = localStorage.getItem(LEADS_PIN_KEY) || '9999';
-  if (document.getElementById('leadsPinInput').value.trim() === stored) {
-    closeLeadsPin(); showView('leads');
-  } else { showToast('⚠️ PIN errato'); document.getElementById('leadsPinInput').value = ''; }
+  const stored=localStorage.getItem(LEADS_PIN_KEY)||'9999';
+  if(document.getElementById('leadsPinInput').value.trim()===stored){closeLeadsPin();showView('leads');}
+  else{showToast(t('toastPinErr'));document.getElementById('leadsPinInput').value='';}
 }
 function closeLeadsPin() { document.getElementById('leadsPinBg').classList.remove('show'); }
 
 // ── CAMERA ──
-async function toggleCamera() { if (stream) stopCamera(); else await startCamera(); }
+async function toggleCamera() { if(stream) stopCamera(); else await startCamera(); }
 async function startCamera() {
   try {
-    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 } } });
-    const v = document.getElementById('videoEl');
-    v.srcObject = stream; v.style.display = 'block';
-    document.getElementById('videoIdle').style.display = 'none';
-    document.getElementById('scanCorners').style.display = 'flex';
-    document.getElementById('btnCapture').disabled = false;
-    document.getElementById('btnCamera').innerHTML = '⏹ Ferma';
-  } catch(e) { showStatus('error','❌ Fotocamera non accessibile. Usa il caricamento immagine.'); }
+    stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1920}}});
+    const v=document.getElementById('videoEl'); v.srcObject=stream; v.style.display='block';
+    document.getElementById('videoIdle').style.display='none';
+    document.getElementById('scanCorners').style.display='flex';
+    document.getElementById('btnCapture').disabled=false;
+    document.getElementById('btn-camera-txt').textContent=t('btnStop').replace('⏹ ','');
+    document.getElementById('btnCamera').innerHTML='⏹ '+t('btnStop').replace('⏹ ','');
+  } catch(e){showStatus('error',t('statusErr')+e.message);}
 }
 function stopCamera() {
-  if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
-  const v = document.getElementById('videoEl');
-  v.style.display = 'none'; v.srcObject = null;
-  document.getElementById('videoIdle').style.display = 'flex';
-  document.getElementById('scanCorners').style.display = 'none';
-  document.getElementById('btnCapture').disabled = true;
-  document.getElementById('btnCamera').innerHTML = '📷 Avvia fotocamera';
+  if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}
+  const v=document.getElementById('videoEl'); v.style.display='none'; v.srcObject=null;
+  document.getElementById('videoIdle').style.display='flex';
+  document.getElementById('scanCorners').style.display='none';
+  document.getElementById('btnCapture').disabled=true;
+  document.getElementById('btnCamera').innerHTML='📷 '+t('btnCamera');
 }
 async function captureAndScan() {
-  const v = document.getElementById('videoEl');
-  const c = document.getElementById('canvasEl');
-  c.width = v.videoWidth; c.height = v.videoHeight;
+  const v=document.getElementById('videoEl');
+  const c=document.getElementById('canvasEl');
+  c.width=v.videoWidth; c.height=v.videoHeight;
   c.getContext('2d').drawImage(v,0,0);
-  await scanWithAI(c.toDataURL('image/jpeg',0.88).split(',')[1]);
+  const b64=await new Promise(resolve=>{c.toBlob(blob=>{const r=new FileReader();r.onload=e=>resolve(e.target.result.split(',')[1]);r.readAsDataURL(blob);},'image/png');});
+  await scanWithAI(b64);
 }
 async function handleFile(e) {
-  const file = e.target.files[0]; if (!file) return;
-  const r = new FileReader();
-  r.onload = async ev => await scanWithAI(ev.target.result.split(',')[1]);
-  r.readAsDataURL(file);
-  e.target.value = '';
+  const file=e.target.files[0]; if(!file) return;
+  const r=new FileReader();
+  r.onload=async ev=>await scanWithAI(ev.target.result.split(',')[1]);
+  r.readAsDataURL(file); e.target.value='';
 }
 
-// ── AI SCAN — calls Netlify function ──
+// ── AI SCAN ──
 async function scanWithAI(b64) {
-  showStatus('scanning','🔍 Lettura biglietto in corso...');
+  showStatus('scanning',t('statusScanning'));
   showView('form');
   try {
-    const res = await fetch('/.netlify/functions/scan', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ image: b64 })
-    });
-    const parsed = await res.json();
-    if (parsed.error) throw new Error(parsed.error);
+    const res=await fetch('/.netlify/functions/scan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({image:b64})});
+    const parsed=await res.json();
+    if(parsed.error) throw new Error(parsed.error);
     fillForm(parsed);
-    showStatus('success','✅ Biglietto letto — verifica i campi evidenziati in verde');
-  } catch(e) {
-    showStatus('error','❌ Errore lettura: ' + e.message);
-  }
+    showStatus('success',t('statusOk'));
+  } catch(e){showStatus('error',t('statusErr')+e.message);}
 }
 
 function fillForm(d) {
-  const map = ['nome','cognome','ruolo','cell','email','org','cap','citta','tel','email_org'];
-  map.forEach(k => {
-    const el = document.getElementById('f_'+k);
-    if (el && d[k]) { el.value = d[k]; el.classList.add('ai-filled'); el.addEventListener('input',()=>el.classList.remove('ai-filled'),{once:true}); }
-  });
+  const map=['nome','cognome','ruolo','cell','email','org','cap','citta','provincia','regione','tel','email_org'];
+  map.forEach(k=>{const el=document.getElementById('f_'+k);if(el&&d[k]){el.value=d[k];el.classList.add('ai-filled');el.addEventListener('input',()=>el.classList.remove('ai-filled'),{once:true});}});
 }
 
-function showStatus(type, msg) {
-  const b = document.getElementById('statusBar');
-  b.style.display = 'flex'; b.className = 'status-bar '+type;
-  b.innerHTML = type==='scanning' ? `<div class="spinner"></div><span>${msg}</span>` : `<span>${msg}</span>`;
+function showStatus(type,msg) {
+  const b=document.getElementById('statusBar');
+  b.style.display='flex'; b.className='status-bar '+type;
+  b.innerHTML=type==='scanning'?`<div class="spinner"></div><span>${msg}</span>`:`<span>${msg}</span>`;
 }
 
 // ── CATEGORY + PILLS ──
 function selectCat(cat) {
-  currentCat = cat;
-  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
-  document.querySelectorAll('.sub-fields').forEach(s => s.classList.remove('show'));
+  currentCat=cat;
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('selected'));
+  document.querySelectorAll('.sub-fields').forEach(s=>s.classList.remove('show'));
   document.getElementById('cat-'+cat).classList.add('selected');
   document.getElementById('sub-'+cat).classList.add('show');
 }
-function togglePill(el, group) {
+function togglePill(el,group) {
   el.classList.toggle('selected');
-  if (!pillState[group]) pillState[group] = new Set();
-  el.classList.contains('selected') ? pillState[group].add(el.textContent.trim()) : pillState[group].delete(el.textContent.trim());
+  if(!pillState[group]) pillState[group]=new Set();
+  el.classList.contains('selected')?pillState[group].add(el.textContent.trim()):pillState[group].delete(el.textContent.trim());
 }
-function togglePillMax(el, group, max) {
-  if (!pillState[group]) pillState[group] = new Set();
-  if (el.classList.contains('selected')) { el.classList.remove('selected'); pillState[group].delete(el.textContent.trim()); }
-  else { if (pillState[group].size >= max) { showToast(`⚠️ Massimo ${max} scelte`); return; } el.classList.add('selected'); pillState[group].add(el.textContent.trim()); }
+function togglePillMax(el,group,max) {
+  if(!pillState[group]) pillState[group]=new Set();
+  if(el.classList.contains('selected')){el.classList.remove('selected');pillState[group].delete(el.textContent.trim());}
+  else{if(pillState[group].size>=max){showToast(t('toastMaxPills',{n:max}));return;}el.classList.add('selected');pillState[group].add(el.textContent.trim());}
 }
-function selectRadio(el, group) {
-  el.parentElement.querySelectorAll('.pill').forEach(p => p.classList.remove('selected'));
+function selectRadio(el,group) {
+  el.parentElement.querySelectorAll('.pill').forEach(p=>p.classList.remove('selected'));
   el.classList.add('selected');
-  pillState[group] = new Set([el.textContent.trim()]);
+  pillState[group]=new Set([el.textContent.trim()]);
 }
-function getPill(group) { return pillState[group] ? [...pillState[group]].join(', ') : ''; }
-function getVal(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+function getPill(group){return pillState[group]?[...pillState[group]].join(', '):''}
+function getVal(id){const el=document.getElementById(id);return el?el.value.trim():''}
 
 function collectSubFields() {
-  if (!currentCat) return {};
+  if(!currentCat) return {};
   switch(currentCat) {
-    case 'pa': return { pa_livello:getVal('sf_pa_livello'), pa_territorio:getVal('sf_pa_territorio'), pa_ruolo:getPill('pa_ruolo'), pa_delega:getVal('sf_pa_delega') };
-    case 'rifiuti': return { rif_tipo:getPill('rif_tipo'), rif_bacino:getVal('sf_rif_bacino'), rif_ruolo:getPill('rif_ruolo') };
-    case 'ente': return { ente_tipo:getPill('ente_tipo'), ente_territorio:getVal('sf_ente_territorio'), ente_ruolo:getVal('sf_ente_ruolo') };
-    case 'privato': return { priv_settore:getPill('priv_settore'), priv_volume:getPill('priv_volume'), priv_ruolo:getPill('priv_ruolo') };
-    case 'progettista': return { prog_tipo:getPill('prog_tipo'), prog_spec:getPill('prog_spec'), prog_ambito:getPill('prog_ambito') };
-    case 'universita': return { uni_tipo:getPill('uni_tipo'), uni_area:getVal('sf_uni_area'), uni_ruolo:getPill('uni_ruolo') };
+    case 'pa': return {pa_livello:getVal('sf_pa_livello'),pa_territorio:getVal('sf_pa_territorio'),pa_provincia:getVal('sf_pa_provincia'),pa_regione:getVal('sf_pa_regione'),pa_ruolo:getPill('pa_ruolo'),pa_delega:getVal('sf_pa_delega')};
+    case 'rifiuti': return {rif_tipo:getPill('rif_tipo'),rif_bacino:getVal('sf_rif_bacino'),rif_ruolo:getPill('rif_ruolo')};
+    case 'ente': return {ente_tipo:getPill('ente_tipo'),ente_territorio:getVal('sf_ente_territorio'),ente_ruolo:getVal('sf_ente_ruolo')};
+    case 'privato': return {priv_settore:getPill('priv_settore'),priv_volume:getPill('priv_volume'),priv_ruolo:getPill('priv_ruolo')};
+    case 'progettista': return {prog_tipo:getPill('prog_tipo'),prog_spec:getPill('prog_spec'),prog_ambito:getPill('prog_ambito')};
+    case 'universita': return {uni_tipo:getPill('uni_tipo'),uni_area:getVal('sf_uni_area'),uni_ruolo:getPill('uni_ruolo')};
   }
   return {};
 }
 
 // ── SAVE ──
 function saveLead() {
-  const lead = {
-    id: editingId || Date.now(),
-    ts: editingId ? (leads.find(l=>l.id===editingId)?.ts || new Date().toISOString()) : new Date().toISOString(),
-    nome:getVal('f_nome'), cognome:getVal('f_cognome'), ruolo:getVal('f_ruolo'),
-    cell:getVal('f_cell'), email:getVal('f_email'), org:getVal('f_org'),
-    cap:getVal('f_cap'), citta:getVal('f_citta'), tel:getVal('f_tel'), email_org:getVal('f_email_org'),
-    categoria:currentCat, sub:collectSubFields(),
-    source:getPill('source'), obiettivo:getPill('obiettivo'), note:getVal('f_note')
+  const lead={
+    id:editingId||Date.now(),
+    ts:editingId?(leads.find(l=>l.id===editingId)?.ts||new Date().toISOString()):new Date().toISOString(),
+    nome:getVal('f_nome'),cognome:getVal('f_cognome'),ruolo:getVal('f_ruolo'),
+    cell:getVal('f_cell'),email:getVal('f_email'),org:getVal('f_org'),
+    cap:getVal('f_cap'),citta:getVal('f_citta'),provincia:getVal('f_provincia'),
+    regione:getVal('f_regione'),tel:getVal('f_tel'),email_org:getVal('f_email_org'),
+    via:'', // kept for backward compat
+    categoria:currentCat,sub:collectSubFields(),
+    source:getPill('source'),obiettivo:getPill('obiettivo'),note:getVal('f_note')
   };
-  if (editingId) { const i=leads.findIndex(l=>l.id===editingId); if(i!==-1) leads[i]=lead; editingId=null; }
+  if(editingId){const i=leads.findIndex(l=>l.id===editingId);if(i!==-1)leads[i]=lead;editingId=null;}
   else leads.unshift(lead);
   save();
-  fetch('/.netlify/functions/save-lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(lead) }).catch(e => console.warn('Sheet sync failed:', e.message));
-  clearForm(); showToast('✅ Contatto salvato!'); showView('leads');
+  fetch('/.netlify/functions/save-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(lead)}).catch(e=>console.warn('Sheet sync failed:',e.message));
+  clearForm(); showToast(t('toastSaved')); showView('leads');
 }
 
 function clearForm() {
-  ['f_nome','f_cognome','f_ruolo','f_cell','f_email','f_org','f_cap','f_citta','f_tel','f_email_org','f_note',
-   'sf_pa_livello','sf_pa_territorio','sf_pa_delega','sf_rif_bacino','sf_ente_territorio','sf_ente_ruolo','sf_uni_area']
-  .forEach(id => { const el=document.getElementById(id); if(el){el.value='';el.classList.remove('ai-filled');} });
-  currentCat=null; pillState={}; editingId=null;
+  ['f_nome','f_cognome','f_ruolo','f_cell','f_email','f_org','f_cap','f_citta','f_provincia','f_regione','f_tel','f_email_org','f_note',
+   'sf_pa_livello','sf_pa_territorio','sf_pa_provincia','sf_pa_regione','sf_pa_delega','sf_rif_bacino','sf_ente_territorio','sf_ente_ruolo','sf_uni_area']
+  .forEach(id=>{const el=document.getElementById(id);if(el){el.value='';el.classList.remove('ai-filled');}});
+  currentCat=null;pillState={};editingId=null;
   document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('selected'));
   document.querySelectorAll('.sub-fields').forEach(s=>s.classList.remove('show'));
   document.querySelectorAll('.pill').forEach(p=>p.classList.remove('selected'));
   document.getElementById('statusBar').style.display='none';
 }
-function newContact() { clearForm(); showView('form'); }
+function newContact(){clearForm();showView('form');}
 
 // ── RENDER LEADS ──
 function renderLeads() {
   const q=(document.getElementById('searchInput')?.value||'').toLowerCase();
-  const filtered=leads.filter(l=>[l.nome,l.cognome,l.org,l.ruolo,l.citta,l.categoria].join(' ').toLowerCase().includes(q));
+  const filtered=leads.filter(l=>[l.nome,l.cognome,l.org,l.ruolo,l.citta,l.provincia,l.categoria].join(' ').toLowerCase().includes(q));
   const c=document.getElementById('leadsList');
-  if (!filtered.length) {
-    c.innerHTML=`<div class="empty-state"><div class="es-icon">👥</div><h3>Nessun contatto ancora</h3><p>Scansiona un biglietto da visita o compila il modulo per aggiungere il primo lead.</p></div>`;
+  const catLabels=t('catLabels');
+  if(!filtered.length){
+    c.innerHTML=`<div class="empty-state"><div class="es-icon">👥</div><h3>${t('emptyTitle')}</h3><p>${t('emptyBody')}</p></div>`;
     return;
   }
-  c.innerHTML=filtered.map(l => {
+  c.innerHTML=filtered.map(l=>{
     const d=new Date(l.ts);
     const ts=d.toLocaleDateString('it-IT',{day:'2-digit',month:'short'})+' '+d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-    const name=[l.nome,l.cognome].filter(Boolean).join(' ')||'— senza nome —';
-    const catLabel=l.categoria?CAT_LABELS[l.categoria]:'';
-    const isHot=l.obiettivo&&(l.obiettivo.includes('Budget')||l.obiettivo.includes('bando')||l.obiettivo.includes('Progettazione'));
+    const name=[l.nome,l.cognome].filter(Boolean).join(' ')||'—';
+    const catLabel=l.categoria?catLabels[l.categoria]:'';
+    const isHot=l.obiettivo&&(l.obiettivo.includes('Budget')||l.obiettivo.includes('budget')||l.obiettivo.includes('bando')||l.obiettivo.includes('Valutazione')||l.obiettivo.includes('Progettazione'));
     const subSummary=l.sub?Object.values(l.sub).filter(Boolean).join(' · '):'';
+    const loc=[l.citta,l.provincia,l.regione].filter(Boolean).join(' · ');
     return `<div class="lead-card">
       <div class="lead-top"><div class="lead-name">${name}</div><div class="lead-time">${ts}</div></div>
       ${l.org?`<div class="lead-org">🏢 ${l.org}</div>`:''}
       ${l.ruolo?`<div style="font-size:12px;color:var(--text3);margin-bottom:8px">${l.ruolo}</div>`:''}
       <div class="lead-chips">
         ${catLabel?`<span class="chip chip-cat">${catLabel}</span>`:''}
-        ${isHot?`<span class="chip chip-hot">🔥 Alta priorità</span>`:''}
+        ${isHot?`<span class="chip chip-hot">${t('hotLabel')}</span>`:''}
         ${l.cell?`<span class="chip">📱 ${l.cell}</span>`:''}
         ${l.email?`<span class="chip">✉️ ${l.email}</span>`:''}
-        ${l.citta?`<span class="chip">📍 ${l.citta}</span>`:''}
+        ${loc?`<span class="chip">📍 ${loc}</span>`:''}
       </div>
       ${subSummary?`<div style="font-size:12px;color:var(--text3);margin-bottom:6px;line-height:1.5">${subSummary}</div>`:''}
       ${l.source?`<div style="font-size:12px;color:var(--text3);margin-bottom:3px">📌 ${l.source}</div>`:''}
       ${l.obiettivo?`<div style="font-size:12px;color:var(--text3);margin-bottom:8px">🎯 ${l.obiettivo}</div>`:''}
       ${l.note?`<div class="lead-note">📝 ${l.note}</div>`:''}
       <div class="lead-actions">
-        <button class="btn btn-outline btn-sm" onclick="editLead(${l.id})">✏️ Modifica</button>
-        <button class="btn btn-danger-outline btn-sm" onclick="confirmDelete(${l.id})">🗑️</button>
+        <button class="btn btn-outline btn-sm" onclick="editLead(${l.id})">${t('editBtn')}</button>
+        <button class="btn btn-danger-outline btn-sm" onclick="confirmDelete(${l.id})">${t('deleteBtn')}</button>
       </div>
     </div>`;
   }).join('');
 }
 
 function editLead(id) {
-  const l=leads.find(x=>x.id===id); if(!l) return;
-  clearForm(); editingId=id;
-  ['nome','cognome','ruolo','cell','email','org','cap','citta','tel','email_org','note'].forEach(k=>{
-    const el=document.getElementById('f_'+k); if(el&&l[k]) el.value=l[k];
+  const l=leads.find(x=>x.id===id);if(!l) return;
+  clearForm();editingId=id;
+  ['nome','cognome','ruolo','cell','email','org','cap','citta','provincia','regione','tel','email_org','note'].forEach(k=>{
+    const el=document.getElementById('f_'+k);if(el&&l[k])el.value=l[k];
   });
-  if(l.categoria) selectCat(l.categoria);
-  showView('form'); showToast('✏️ Modifica contatto');
+  if(l.categoria)selectCat(l.categoria);
+  showView('form');showToast(t('toastEditing'));
 }
 function confirmDelete(id) {
   pendingDeleteId=id;
   const l=leads.find(x=>x.id===id);
-  const name=[l?.nome,l?.cognome].filter(Boolean).join(' ')||'questo contatto';
-  document.getElementById('modalTitle').textContent='Elimina contatto';
-  document.getElementById('modalMsg').textContent=`Eliminare ${name}? L'operazione non è reversibile.`;
+  const name=[l?.nome,l?.cognome].filter(Boolean).join(' ')||'?';
+  document.getElementById('modalTitle').textContent=t('modalDeleteTitle');
+  document.getElementById('modalMsg').textContent=t('modalDeleteMsg',{name});
+  document.getElementById('modalConfirmBtn').textContent=t('modalConfirm');
   document.getElementById('modalConfirmBtn').onclick=()=>{deleteLead(pendingDeleteId);closeModal();};
   document.getElementById('modalBg').classList.add('show');
 }
-function deleteLead(id) { leads=leads.filter(x=>x.id!==id); save(); renderLeads(); showToast('🗑️ Contatto eliminato'); }
-function closeModal() { document.getElementById('modalBg').classList.remove('show'); }
+function deleteLead(id){leads=leads.filter(x=>x.id!==id);save();renderLeads();showToast(t('toastDeleted'));}
+function closeModal(){document.getElementById('modalBg').classList.remove('show');}
 
 // ── CSV ──
 function exportCSV() {
-  if (!leads.length) { showToast('Nessun contatto da esportare'); return; }
-  const headers=['Data','Nome','Cognome','Ruolo','Cellulare','Email','Organizzazione','CAP','Città','Telefono','Email org','Categoria','Dettagli categoria','Come conosciuto','Obiettivo','Note'];
+  if(!leads.length){showToast(t('toastNoLeads'));return;}
+  const catLabels=t('catLabels');
+  const headers=t('csvHeaders');
   const rows=leads.map(l=>[
     new Date(l.ts).toLocaleString('it-IT'),
-    l.nome,l.cognome,l.ruolo,l.cell,l.email,l.org,l.cap,l.citta,l.tel,l.email_org,
-    l.categoria?CAT_LABELS[l.categoria]:'',
+    l.nome,l.cognome,l.ruolo,l.cell,l.email,l.org,
+    l.cap,l.citta,l.provincia||'',l.regione||'',l.tel,l.email_org,
+    l.categoria?catLabels[l.categoria]:'',
     l.sub?Object.values(l.sub).filter(Boolean).join(' | '):'',
     l.source,l.obiettivo,l.note
   ].map(v=>`"${(v||'').replace(/"/g,'""')}"`));
   const csv=[headers.join(','),...rows.map(r=>r.join(','))].join('\n');
   const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
   const url=URL.createObjectURL(blob);
-  const a=document.createElement('a'); a.href=url;
+  const a=document.createElement('a');a.href=url;
   a.download=`citynet_leads_${new Date().toISOString().slice(0,10)}.csv`;
-  a.click(); URL.revokeObjectURL(url);
-  showToast(`📥 Esportati ${leads.length} contatti`);
+  a.click();URL.revokeObjectURL(url);
+  showToast(t('toastExported',{n:leads.length}));
 }
 
 // ── UTILS ──
-function save() { localStorage.setItem('kc_leads',JSON.stringify(leads)); }
+function save(){localStorage.setItem('kc_leads',JSON.stringify(leads));}
 let toastT;
-function showToast(msg) {
-  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
-  clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),3000);
+function showToast(msg){
+  const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');
+  clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),3000);
 }
 
 document.getElementById('modalBg').addEventListener('click',function(e){if(e.target===this)closeModal();});
 document.getElementById('leadsPinBg').addEventListener('click',function(e){if(e.target===this)closeLeadsPin();});
 document.getElementById('leadsPinInput').addEventListener('keydown',function(e){if(e.key==='Enter')verifyLeadsPin();});
 
-if (!localStorage.getItem(STAFF_PIN_KEY)) showSetup();
+// ── INIT ──
+setLang(currentLang);
+if(!localStorage.getItem(STAFF_PIN_KEY))showSetup();
 </script>
 </body>
 </html>
