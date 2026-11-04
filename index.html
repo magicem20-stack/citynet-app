@@ -1058,22 +1058,36 @@ function collectSubFields() {
 
 // ── SAVE ──
 function saveLead() {
-  const lead={
-    id:editingId||Date.now(),
-    ts:editingId?(leads.find(l=>l.id===editingId)?.ts||new Date().toISOString()):new Date().toISOString(),
-    nome:getVal('f_nome'),cognome:getVal('f_cognome'),ruolo:getVal('f_ruolo'),
-    cell:getVal('f_cell'),email:getVal('f_email'),org:getVal('f_org'),
-    cap:getVal('f_cap'),citta:getVal('f_citta'),provincia:getVal('f_provincia'),
-    regione:getVal('f_regione'),tel:getVal('f_tel'),email_org:getVal('f_email_org'),
-    via:'', // kept for backward compat
-    categoria:currentCat,sub:collectSubFields(),
-    source:getPill('source'),obiettivo:getPill('obiettivo'),note:getVal('f_note')
+  const lead = {
+    id: editingId || Date.now(),
+    ts: editingId ? (leads.find(l=>l.id===editingId)?.ts || new Date().toISOString()) : new Date().toISOString(),
+    nome:getVal('f_nome'), cognome:getVal('f_cognome'), ruolo:getVal('f_ruolo'),
+    cell:getVal('f_cell'), email:getVal('f_email'), org:getVal('f_org'),
+    cap:getVal('f_cap'), citta:getVal('f_citta'), tel:getVal('f_tel'), email_org:getVal('f_email_org'),
+    categoria:currentCat, sub:collectSubFields(),
+    source:getPill('source'), obiettivo:getPill('obiettivo'), note:getVal('f_note')
   };
-  if(editingId){const i=leads.findIndex(l=>l.id===editingId);if(i!==-1)leads[i]=lead;editingId=null;}
+  if (editingId) { const i=leads.findIndex(l=>l.id===editingId); if(i!==-1) leads[i]=lead; editingId=null; }
   else leads.unshift(lead);
-  save();
-  fetch('/.netlify/functions/save-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(lead)}).catch(e=>console.warn('Sheet sync failed:',e.message));
-  clearForm(); showToast(t('toastSaved')); showView('leads');
+  save(); clearForm(); showToast('✅ Contatto salvato!'); showView('leads');
+  pushToSheets(lead);
+}
+
+async function pushToSheets(lead) {
+  try {
+    const res = await fetch('/.netlify/functions/save-lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(lead)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      console.warn('[Sheets] sync fallita:', err.error || res.status);
+      showToast('⚠️ Salvato in locale — sync foglio fallita');
+    }
+  } catch (e) {
+    console.warn('[Sheets] sync error:', e.message);
+  }
 }
 
 function clearForm() {
