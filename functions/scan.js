@@ -1,49 +1,24 @@
-function detectMimeType(base64) {
-  const sig = base64.substring(0, 16);
-  if (sig.startsWith('/9j/')) return 'image/jpeg';
-  if (sig.startsWith('iVBORw')) return 'image/png';
-  if (sig.startsWith('R0lGOD')) return 'image/gif';
-  if (sig.startsWith('UklGR')) return 'image/webp';
-  return 'image/png';
-}
-
 exports.handler = async function(event) {
-  const headers = {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS'
-  };
-
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers, body: '' };
-  }
-
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method Not Allowed' }) };
+    return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
-    console.error('ANTHROPIC_API_KEY not set');
-    return { statusCode: 500, headers, body: JSON.stringify({ error: 'API key non configurata sul server.' }) };
+    return { statusCode: 500, body: JSON.stringify({ error: 'API key non configurata sul server.' }) };
   }
 
   let body;
   try {
     body = JSON.parse(event.body);
   } catch(e) {
-    console.error('Body parse error:', e.message);
-    return { statusCode: 400, headers, body: JSON.stringify({ error: 'Body non valido: ' + e.message }) };
+    return { statusCode: 400, body: JSON.stringify({ error: 'Richiesta non valida.' }) };
   }
 
   const { image } = body;
   if (!image) {
-    return { statusCode: 400, headers, body: JSON.stringify({ error: 'Campo image mancante.' }) };
+    return { statusCode: 400, body: JSON.stringify({ error: 'Immagine mancante.' }) };
   }
-
-  const mimeType = detectMimeType(image);
-  console.log('Image received, length:', image.length, 'detected type:', mimeType);
 
   const prompt = `Extract all contact data visible on this business card. Return ONLY a valid JSON object with these exact keys (use null if not found):
 {
@@ -62,7 +37,6 @@ exports.handler = async function(event) {
 No preamble, no markdown, no explanation. Only the JSON object.`;
 
   try {
-    console.log('Calling Anthropic API...');
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -71,41 +45,33 @@ No preamble, no markdown, no explanation. Only the JSON object.`;
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-haiku-4-5',
         max_tokens: 800,
         messages: [{
           role: 'user',
           content: [
-            { type: 'image', source: { type: 'base64', media_type: mimeType, data: image } },
+            { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: image } },
             { type: 'text', text: prompt }
           ]
         }]
       })
     });
 
-    const raw = await response.text();
-    console.log('Anthropic status:', response.status);
-    console.log('Anthropic response (first 500):', raw.substring(0, 500));
-
-    if (!response.ok) {
-      return { statusCode: 502, headers, body: JSON.stringify({ error: 'Errore API Anthropic: ' + raw.substring(0, 200) }) };
-    }
-
-    const data = JSON.parse(raw);
-    if (data.error) {
-      return { statusCode: 502, headers, body: JSON.stringify({ error: data.error.message }) };
-    }
+    const data = await response.json();
+    if (data.error) throw new Error(data.error.message);
 
     const text = data.content?.map(c => c.text || '').join('') || '';
-    console.log('Claude text response:', text);
+    const parsed = JSON.parse(text.replace(/```json|```/g, '').trim());
 
-    const cleaned = text.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(cleaned);
-
-    return { statusCode: 200, headers, body: JSON.stringify(parsed) };
-
+    return {
+      statusCode: 200,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(parsed)
+    };
   } catch(e) {
-    console.error('Function error:', e.message);
-    return { statusCode: 500, headers, body: JSON.stringify({ error: 'Errore interno: ' + e.message }) };
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Errore lettura biglietto: ' + e.message })
+    };
   }
 };
